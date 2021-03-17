@@ -1,0 +1,71 @@
+.el-header-no-padding {
+  padding: 0;
+}
+
+li.el-menu-item {
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.lateral {
+  ul {
+    line-height: 1.5em;
+    text-align: left;
+    font-size: 1em;
+    li {
+      padding-left: 10px;
+      padding-top: 10px;
+      transition: height 1s;
+      cursor: pointer;
+      &:hover {
+        &:before {
+          content: '| ';
+          color: #c24f02;
+        }
+      }
+    }
+    ul {
+      font-size: .95em;
+      li {
+        padding-left: 20px;
+        &:hover {
+          &:before {
+            color: #803401;
+          }
+        }
+      }
+      ul {
+        font-size: .9em;
+        li {
+          padding-left: 30px;
+          &:hover {
+            &:before {
+              color: #4c1f01;
+            }
+          }
+        }
+        ul {
+          font-size: .85em;
+          li {
+            padding-left: 40px;
+            &:hover {
+              &:before {
+                color: #2b1100;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.open ul {
+  display: block;
+}
+
+.close ul {
+  display: none;
+}

@@ -1,0 +1,20 @@
+{
+  "path": [
+    {
+      "name": "Objetivos",
+      "index": "bt1"
+    },
+    {
+      "name": "Colaboradores",
+      "index": "bt2"
+    },
+    {
+      "name": "Link GitHub",
+      "index": "bt3"
+    },
+    {
+      "name": "Redes Sociales",
+      "index": "bt4"
+    }
+  ]
+}

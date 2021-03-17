@@ -1,0 +1,13 @@
+{
+  "message": {
+    "value": "Esto es un ejemplo de traduccion"
+  },
+  "languages": {
+    "openDialog": "Haga clic para abrir el diálogo",
+    "enviar": "Enviar",
+    "delete": "Borrar",
+    "change": "Modificar",
+    "create": "Crear",
+    "new": "Nuevo"
+  }
+}

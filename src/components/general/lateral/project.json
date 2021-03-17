@@ -1,0 +1,128 @@
+{
+  "path": [
+    {
+      "name": "Language",
+      "index": "pr1",
+      "children": [
+        {
+          "name": "Translate",
+          "index": "pr11"
+        },
+        {
+          "name": "Seleccion",
+          "index": "pr12"
+        },
+        {
+          "name": "Create",
+          "index": "pr13"
+        },
+        {
+          "name": "Delete",
+          "index": "pr14"
+        },
+        {
+          "name": "Change",
+          "index": "pr15"
+        }
+      ]
+    },
+    {
+      "name": "Create",
+      "index": "pr2"
+    },
+    {
+      "name": "Delete",
+      "index": "pr3"
+    },
+    {
+      "name": "Change",
+      "index": "pr4"
+    },
+    {
+      "name": "Preview",
+      "index": "pr5",
+      "children": [
+        {
+          "name": "Create",
+          "index": "pr51"
+        },
+        {
+          "name": "Plantillas",
+          "index": "pr52"
+        }
+      ]
+    },
+    {
+      "name": "Produce",
+      "index": "pr6",
+      "children": [
+        {
+          "name": "Export",
+          "index": "pr61"
+        },
+        {
+          "name": "Plantillas",
+          "index": "pr62"
+        }
+      ]
+    },
+    {
+      "name": "Nodo",
+      "index": "pr7",
+      "children": [
+        {
+          "name": "Relation",
+          "index": "pr71"
+        },
+        {
+          "name": "Create",
+          "index": "pr72"
+        },
+        {
+          "name": "Delete",
+          "index": "pr73"
+        },
+        {
+          "name": "Change",
+          "index": "pr74"
+        }
+      ]
+    },
+    {
+      "name": "Closed",
+      "index": "pr8",
+      "children": [
+        {
+          "name": "Create",
+          "index": "pr81"
+        },
+        {
+          "name": "Delete",
+          "index": "pr82"
+        },
+        {
+          "name": "Change",
+          "index": "pr83"
+        },
+        {
+          "name": "Relation",
+          "index": "pr84"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "index": "pr9",
+      "children": [
+        {
+          "name": "Nodos sin cierre",
+          "index": "pr91"
+        },
+        {
+          "name": "Break translate",
+          "index": "pr92"
+        }
+      ]
+    }
+  ]
+}

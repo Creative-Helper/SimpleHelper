@@ -1,0 +1,13 @@
+{
+  "message": {
+    "value": "Aquest és un exemple de traducció de contingut."
+  },
+  "languages": {
+    "openDialog": "Feu clic per obrir el diàleg",
+    "enviar": "Enviar",
+    "delete": "Esborrar",
+    "change": "Modificar",
+    "create": "Crear",
+    "new": "Nou"
+  }
+}

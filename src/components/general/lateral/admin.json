@@ -1,0 +1,60 @@
+{
+  "path": [
+    {
+      "name": "Projects",
+      "index": "1",
+      "children": [
+        {
+          "name": "Copy",
+          "index": "11"
+        },
+        {
+          "name": "Delete",
+          "index": "12"
+        },
+        {
+          "name": "Change",
+          "index": "13"
+        },
+        {
+          "name": "Export",
+          "index": "14"
+        },
+        {
+          "name": "Status",
+          "index": "15"
+        }
+      ]
+    },
+    {
+      "name": "Language",
+      "index": "2"
+    },
+    {
+      "name": "Apis",
+      "index": "3"
+    },
+    {
+      "name": "Control Size",
+      "index": "4",
+      "children": [
+        {
+          "name": "Uploads",
+          "index": "41"
+        },
+        {
+          "name": "Projects",
+          "index": "42"
+        },
+        {
+          "name": "Previews",
+          "index": "43"
+        }
+      ]
+    },
+    {
+      "name": "Todo",
+      "index": "5"
+    }
+  ]
+}

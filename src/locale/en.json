@@ -1,0 +1,13 @@
+{
+  "message": {
+    "value": "This is an example of content translation."
+  },
+  "languages": {
+    "openDialog": "Click to open the dialog",
+    "enviar": "Send",
+    "delete": "Delete",
+    "change": "Modify",
+    "create": "Create",
+    "new": "New"
+  }
+}
