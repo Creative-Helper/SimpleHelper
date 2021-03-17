@@ -1,5 +1,11 @@
 import express from 'express'
-import { allLanguagesApi, languageForShort, createLanguage } from './languages/languageApi.js'
+import {
+  allLanguagesApi,
+  languageForShort,
+  createLanguage,
+  deleteLanguage,
+  changeLanguage
+} from './languages/languageApi.js'
 import {uploadFileGeneral} from './workingFiles/fileApi.js'
 import dotenv from 'dotenv'
 import cors from 'cors'
@@ -21,6 +27,8 @@ allLanguagesApi(app)
 languageForShort(app)
 createLanguage(app)
 uploadFileGeneral(app)
+deleteLanguage(app)
+changeLanguage(app)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

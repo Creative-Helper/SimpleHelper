@@ -10,13 +10,15 @@
       name="image"
       list-type="picture"
       :file-list="fileListInternal">
-      <div class="espaciado" >
-      <el-button size="small" type="primary" :disabled="fileListInternal.length !== 0" >Clic para subir archivo</el-button>
+      <div class="espaciado">
+        <el-button size="small" type="primary" :disabled="fileListInternal.length !== 0">
+          Clic para subir archivo
+        </el-button>
       </div>
       <template #tip>
         <div class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb
           <div v-if="fileListInternal.length > 0" class="espaciado">
-         Elimine el archivo ANTES de subir uno nuevo si lo desea cambiar.
+            Elimine el archivo ANTES de subir uno nuevo si lo desea cambiar.
           </div>
         </div>
       </template>
@@ -25,6 +27,7 @@
 </template>
 <script>
 import { ref } from 'vue'
+
 export default {
   name: 'uploadGeneral',
   props: {
@@ -47,7 +50,10 @@ export default {
       context.emit('update:filename', file.name)
     }
     return {
-      lineUpload, handleRemove, fileListInternal, handleSuccess
+      lineUpload,
+      handleRemove,
+      fileListInternal,
+      handleSuccess
     }
   }
 }

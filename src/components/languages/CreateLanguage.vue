@@ -2,7 +2,7 @@
   <div class="createlng">
     <el-button type="text" @click="dialogVisible = true">{{t('languages.new')}}</el-button>
     <modal :visible="dialogVisible" title="Agregar lenguaje" >
-    <form-language @operation="dialogVisible = false" ref="controlModal"/>
+    <form-language @operation="operation" ref="controlModal"/>
     </modal>
   </div>
 </template>
@@ -15,10 +15,15 @@ import modal from '@/components/modal'
 export default {
   name: 'CreateLanguage',
   components: { formLanguage, modal },
-  setup () {
+  emits: ['operation'],
+  setup (props, context) {
     const { t } = useI18n()
     const controlModal = ref(null)
     const dialogVisible = ref(false)
+    const operation = () => {
+      dialogVisible.value = false
+      context.emit('operation')
+    }
     watch(
       () => dialogVisible.value,
       (current, old) => {
@@ -28,7 +33,7 @@ export default {
       }
     )
     return {
-      dialogVisible, t, controlModal
+      dialogVisible, t, controlModal, operation
     }
   }
 }

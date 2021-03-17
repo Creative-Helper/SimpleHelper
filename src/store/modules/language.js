@@ -1,5 +1,7 @@
 import axiosApi from '@/config/api.js'
 import qs from 'qs'
+import { ElNotification } from 'element-plus'
+
 const language = {
   namespaced: true,
   state: () => ({
@@ -27,8 +29,54 @@ const language = {
   },
   actions: {
     addLanguage: ({ commit }, language) => commit('changeLanguage', language),
-    modifyLanguage: ({ commit }, language) => commit('changeLanguage', language),
-    deleteLanguage: ({ commit }, language) => commit('removeLanguage', language),
+    modifyLanguage: ({ commit }, { oldL, newL }) => {
+      console.log(oldL, newL)
+      axiosApi.post(process.env.VUE_APP_API_URL + 'language/change/', qs.stringify({
+        old: {
+          name: oldL.name,
+          short: oldL.short,
+          file: oldL.file
+        },
+        language: {
+          name: newL.name,
+          short: newL.short,
+          file: newL.file
+        }
+      })).then((response) => {
+        console.log('response: ', response.data)
+        commit('none')
+        ElNotification({
+          title: 'Error',
+          message: 'Cambiado el lenguaje: ' + newL.name,
+          type: 'success'
+        })
+      }).catch((error) => {
+        const message = error.response
+        ElNotification.error({
+          title: 'Error',
+          message: message.data.error
+        })
+      })
+    },
+    deleteLanguage: ({ commit }, language) => {
+      axiosApi.post(process.env.VUE_APP_API_URL + 'language/delete/', qs.stringify({
+        short: language.short
+      })).then((response) => {
+        console.log('response: ', response.data)
+        commit('none')
+        ElNotification({
+          title: 'Error',
+          message: 'Eliminado el lenguaje: ' + language.name,
+          type: 'success'
+        })
+      }).catch((error) => {
+        const message = error.response
+        ElNotification.error({
+          title: 'Error',
+          message: message.data.error
+        })
+      })
+    },
     Init: ({ commit }) => {
       axiosApi.get(process.env.VUE_APP_API_URL + 'languages/').then(response => {
         commit('updateLanguages', response.data)
@@ -42,6 +90,12 @@ const language = {
       })).then((response) => {
         console.log('response: ', response.data)
         commit('none')
+      }).catch((error) => {
+        const message = error.response
+        ElNotification.error({
+          title: 'Error',
+          message: message.data.error
+        })
       })
     }
   },

@@ -2,7 +2,7 @@
   <div>
     <el-button type="text" @click="dialogVisible = true">{{t('languages.change')}}</el-button>
     <modal :visible="dialogVisible" title="Modificar lenguaje">
-      <form-language @operation="dialogVisible = false" :externalLanguage="internalLanguage" action="change"/>
+      <form-language @operation="operation" :externalLanguage="internalLanguage" action="change"/>
     </modal>
   </div>
 </template>
@@ -15,20 +15,24 @@ import deepClone from '../../assets/js/deepClone'
 export default {
   name: 'ChangeLanguage',
   components: { formLanguage, modal },
+  emits: ['operation'],
   props: {
     externalLanguage: {
       type: Object,
       require: true,
-      default: () => { return {} },
-      validation: (value) => Object.keys(value).length > 0
+      default: () => { return {} }
     }
   },
-  setup (props) {
+  setup (props, context) {
     const { t } = useI18n()
     const dialogVisible = ref(false)
     const internalLanguage = computed(() => deepClone(props.externalLanguage))
+    const operation = () => {
+      dialogVisible.value = false
+      context.emit('operation')
+    }
     return {
-      dialogVisible, t, internalLanguage
+      dialogVisible, t, internalLanguage, operation
     }
   }
 }

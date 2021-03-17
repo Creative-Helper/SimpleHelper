@@ -1,11 +1,9 @@
 <template>
   <div class="allIzq">
-    <create-language/>
+    <create-language @operation="operation"/>
     <span class="titleAll" v-if="bulkSelection.length > 0">Marcados:&nbsp;&nbsp;</span>
-    <delete-masive-language :list-language="bulkSelection" v-if="bulkSelection.length > 0" />
-    <!-- <el-button v-if="bulkSelection.length > 0" type="text">Eliminar</el-button> -->
-    <!--<el-button v-if="bulkSelection.length > 0" type="text">Modificar</el-button>-->
-    <change-masive-language :list-languages="bulkSelection" v-if="bulkSelection.length > 0" />
+    <delete-masive-language :list-language="bulkSelection" v-if="bulkSelection.length > 0" @operation="operation" />
+    <change-masive-language :list-languages="bulkSelection" v-if="bulkSelection.length > 0" @operation="operation" />
   </div>
   <el-table
     :data="listLanguage"
@@ -39,8 +37,8 @@
       label="Operaciones"
       width="120">
       <template #default="scope">
-        <delete-language :externalLanguage="scope.row"/>
-        <change-language :externalLanguage="scope.row"/>
+        <delete-language :externalLanguage="scope.row" @operation="operation" />
+        <change-language :externalLanguage="scope.row" @operation="operation" />
       </template>
     </el-table-column>
   </el-table>
@@ -77,10 +75,15 @@ export default {
     const handleSelectionChange = (selection) => {
       bulkSelection.value = selection
     }
+    const operation = () => {
+      console.log('init')
+      init()
+    }
     return {
       listLanguage,
       handleSelectionChange,
-      bulkSelection
+      bulkSelection,
+      operation
     }
   }
 }

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-form label-position="left" label-width="300px" :model="internalLanguage" :rules="rules" ref="LanguageForm">
+    <el-form label-position="left" label-width="300px" :model="internalLanguage" :rules="rules" ref="LanguageForm"
+             :disabled="action==='delete'">
       <el-form-item label="Nombre" prop="name">
         <el-input v-model="internalLanguage.name"></el-input>
       </el-form-item>
@@ -12,27 +13,34 @@
       <el-alert v-if="formError"
                 title="Error en el envio"
                 type="error"
+                @close="formError = false"
                 description="Por favor  revise el formulario y los errores marcados"
                 show-icon>
       </el-alert>
     </div>
-    <div class="text-center">
-    <uploadGeneral v-model:filename="internalLanguage.file" ref="uploadForm"/>
-       </div>
-    <div class="text-right">
-    <el-button type="secondary" @click="operationLanguage" class="espaciado">
-      Cancelar
-    </el-button>
-    <el-button type="success" @click="createLanguage" class="espaciado" v-if="action==='create'">
-      {{ t('languages.enviar') }}
-    </el-button>
-    <el-button type="warning" @click="changeLanguage" class="espaciado" v-if="action==='change'">
-      {{ t('languages.enviar') }}
-    </el-button>
-    <el-button type="danger" @click="deleteLanguage" class="espaciado" v-if="action==='delete'">
-      {{ t('languages.enviar') }}
-    </el-button>
+    <div v-if="action==='delete' || action==='change'">
+      <div class="content-image-language" v-if="internalLanguage.type==='image'">
+        <img :src="internalLanguage.image" :alt="internalLanguage.name"/>
       </div>
+      <div class="content-image-language" v-html="internalLanguage.image" v-if="internalLanguage.type==='text'"/>
+    </div>
+    <div class="text-center" v-if="action!=='delete'">
+      <uploadGeneral v-model:filename="internalLanguage.file" ref="uploadForm"/>
+    </div>
+    <div class="text-right">
+      <el-button type="plain" @click="operationLanguage" class="espaciado">
+        Cancelar
+      </el-button>
+      <el-button type="success" @click="createLanguage" class="espaciado" v-if="action==='create'">
+        {{ t('languages.enviar') }}
+      </el-button>
+      <el-button type="warning" @click="changeLanguage" class="espaciado" v-if="action==='change'">
+        {{ t('languages.enviar') }}
+      </el-button>
+      <el-button type="danger" @click="deleteLanguage" class="espaciado" v-if="action==='delete'">
+        {{ t('languages.enviar') }}
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -42,6 +50,7 @@ import { useStore } from 'vuex'
 import uploadGeneral from '@/components/uploadGeneral'
 import deepClone from '@/assets/js/deepClone'
 import { useI18n } from 'vue-i18n'
+import { ElNotification } from 'element-plus'
 
 export default {
   name: 'formLanguage',
@@ -69,7 +78,16 @@ export default {
     const LanguageForm = ref(null)
     const uploadForm = ref(null)
     const internalLanguage = reactive(deepClone(props.externalLanguage))
+    const oldLanguage = reactive(deepClone(props.externalLanguage))
     const createLanguage = () => {
+      if (!internalLanguage.file) {
+        formError.value = true
+        ElNotification.error({
+          title: 'Error',
+          message: 'La imagen es necesaria'
+        })
+        return
+      }
       LanguageForm.value.validate((valid) => {
         if (valid) {
           formError.value = false
@@ -77,23 +95,51 @@ export default {
           internalLanguage.name = ''
           internalLanguage.short = ''
           internalLanguage.file = ''
-          uploadForm.value.handleRemove()
+          context.emit('operation')
+        } else {
+          formError.value = true
+          if (!internalLanguage.file) {
+            ElNotification.error({
+              title: 'Error',
+              message: 'La imagen es necesaria'
+            })
+          }
+        }
+      })
+    }
+    const changeLanguage = () => {
+      LanguageForm.value.validate((valid) => {
+        if (valid) {
+          formError.value = false
+          store.dispatch('language/modifyLanguage',
+            {
+              oldL: deepClone(oldLanguage),
+              newL: deepClone(internalLanguage)
+            })
+          internalLanguage.name = ''
+          internalLanguage.short = ''
+          internalLanguage.file = ''
+          oldLanguage.name = ''
+          oldLanguage.short = ''
+          oldLanguage.file = ''
           context.emit('operation')
         } else {
           formError.value = true
         }
       })
     }
-    const changeLanguage = () => {
-      return {}
-    }
-    const deleteLanguage = () => {
-      return {}
-    }
     const resetForm = () => {
       LanguageForm.value.resetFields()
       formError.value = false
       uploadForm.value.handleRemove()
+    }
+    const deleteLanguage = () => {
+      store.dispatch('language/deleteLanguage', deepClone(internalLanguage))
+      internalLanguage.name = ''
+      internalLanguage.short = ''
+      internalLanguage.file = ''
+      formError.value = false
+      context.emit('operation')
     }
     const operationLanguage = () => context.emit('operation')
     const rules = {

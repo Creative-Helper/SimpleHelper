@@ -11,7 +11,11 @@ const searchLanguage = (short, name = null) => {
   if (name) {
     const resultName = searchLanguageForName(name, fileNames)
     const resultShort = searchLanguageForShort(short, fileNames)
-    return !resultName && !resultShort
+    if (resultName) {
+      return true
+    }
+    return resultShort
+
   }
   return searchLanguageForShort(short, fileNames)
 }
