@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import uploadGeneral from '@/components/uploadGeneral'
 import deepClone from '@/assets/js/deepClone'
@@ -77,10 +77,10 @@ export default {
     const store = useStore()
     const LanguageForm = ref(null)
     const uploadForm = ref(null)
-    const internalLanguage = reactive(deepClone(props.externalLanguage))
-    const oldLanguage = reactive(deepClone(props.externalLanguage))
+    const internalLanguage = ref(deepClone(props.externalLanguage))
+    const oldLanguage = ref(deepClone(props.externalLanguage))
     const createLanguage = () => {
-      if (!internalLanguage.file) {
+      if (!internalLanguage.value.file) {
         formError.value = true
         ElNotification.error({
           title: 'Error',
@@ -91,14 +91,14 @@ export default {
       LanguageForm.value.validate((valid) => {
         if (valid) {
           formError.value = false
-          store.dispatch('language/createLanguage', deepClone(internalLanguage))
-          internalLanguage.name = ''
-          internalLanguage.short = ''
-          internalLanguage.file = ''
+          store.dispatch('language/createLanguage', deepClone(internalLanguage.value))
+          internalLanguage.value.name = ''
+          internalLanguage.value.short = ''
+          internalLanguage.value.file = ''
           context.emit('operation')
         } else {
           formError.value = true
-          if (!internalLanguage.file) {
+          if (!internalLanguage.value.file) {
             ElNotification.error({
               title: 'Error',
               message: 'La imagen es necesaria'
@@ -107,37 +107,40 @@ export default {
         }
       })
     }
+    const resetForm = () => {
+      LanguageForm.value.resetFields()
+      formError.value = false
+      uploadForm.value.handleRemove()
+    }
     const changeLanguage = () => {
       LanguageForm.value.validate((valid) => {
         if (valid) {
           formError.value = false
           store.dispatch('language/modifyLanguage',
             {
-              oldL: deepClone(oldLanguage),
-              newL: deepClone(internalLanguage)
+              oldL: deepClone(oldLanguage.value),
+              newL: deepClone(internalLanguage.value)
             })
-          internalLanguage.name = ''
-          internalLanguage.short = ''
-          internalLanguage.file = ''
-          oldLanguage.name = ''
-          oldLanguage.short = ''
-          oldLanguage.file = ''
+          internalLanguage.value.name = ''
+          internalLanguage.value.short = ''
+          internalLanguage.value.file = ''
+          oldLanguage.value.name = ''
+          oldLanguage.value.short = ''
+          oldLanguage.value.file = ''
+          resetForm()
           context.emit('operation')
+          internalLanguage.value = deepClone(props.externalLanguage)
+          oldLanguage.value = deepClone(props.externalLanguage)
         } else {
           formError.value = true
         }
       })
     }
-    const resetForm = () => {
-      LanguageForm.value.resetFields()
-      formError.value = false
-      uploadForm.value.handleRemove()
-    }
     const deleteLanguage = () => {
-      store.dispatch('language/deleteLanguage', deepClone(internalLanguage))
-      internalLanguage.name = ''
-      internalLanguage.short = ''
-      internalLanguage.file = ''
+      store.dispatch('language/deleteLanguage', deepClone(internalLanguage.value))
+      internalLanguage.value.name = ''
+      internalLanguage.value.short = ''
+      internalLanguage.value.file = ''
       formError.value = false
       context.emit('operation')
     }
@@ -170,6 +173,11 @@ export default {
         }
       ]
     }
+    watch(() => props.externalLanguage, (selection) => {
+      resetForm()
+      internalLanguage.value = deepClone(selection)
+      oldLanguage.value = deepClone(selection)
+    })
     return {
       internalLanguage,
       t,

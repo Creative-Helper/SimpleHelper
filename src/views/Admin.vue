@@ -10,6 +10,7 @@
         <li>Analisis de proyectos.</li>
         <li>configurar .gitignore para que futuras actualizaciones no afecten las configuraciones.</li>
         <li>eliminar plantillas del listado.</li>
+      <li>cambiar unitario no actualiza el modal.</li>
       <li>LOGS</li>
     </ul>
     <div v-if="index === '2'">

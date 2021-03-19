@@ -36,17 +36,22 @@
     <el-button type="primary" @click="dialogVisible=false" class="espaciado">
       Cancelar
     </el-button>
+    <el-button type="danger" @click="deleteLang" class="espaciado">
+      Eliminar
+    </el-button>
   </modal>
   </div>
 </template>
 <script>
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import deepClone from '@/assets/js/deepClone'
 import modal from '@/components/modal'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 export default {
   name: 'DeleteMassiveLanguage',
   components: { modal },
+  emits: ['operation'],
   props: {
     listLanguage: {
       type: Array,
@@ -54,15 +59,27 @@ export default {
       default: () => { return [] }
     }
   },
-  setup (props) {
-    const internaList = computed(() => deepClone(props.listLanguage))
+  setup (props, context) {
+    const internaList = ref(deepClone(props.listLanguage))
     const { t } = useI18n()
+    const store = useStore()
     const dialogVisible = ref(false)
     const recovery = (elemento) => {
-      console.log(elemento)
+      internaList.value = internaList.value.filter(item => item.short !== elemento.short)
     }
+    const deleteLang = () => {
+      internaList.value.forEach(item => {
+        store.dispatch('language/deleteLanguage', deepClone(item))
+      })
+      internaList.value = []
+      dialogVisible.value = false
+      context.emit('operation')
+    }
+    watch(() => props.listLanguage, (value) => {
+      internaList.value = value
+    })
     return {
-      recovery, internaList, t, dialogVisible
+      recovery, internaList, t, dialogVisible, deleteLang
     }
   }
 }

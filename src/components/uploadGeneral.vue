@@ -16,7 +16,7 @@
         </el-button>
       </div>
       <template #tip>
-        <div class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb
+        <div class="el-upload__tip">Solo archivos jpg/png/svg con un tamaño menor de 500kb
           <div v-if="fileListInternal.length > 0" class="espaciado">
             Elimine el archivo ANTES de subir uno nuevo si lo desea cambiar.
           </div>

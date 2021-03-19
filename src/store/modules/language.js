@@ -42,8 +42,7 @@ const language = {
           short: newL.short,
           file: newL.file
         }
-      })).then((response) => {
-        console.log('response: ', response.data)
+      })).then(() => {
         commit('none')
         ElNotification({
           title: 'Error',
@@ -61,8 +60,7 @@ const language = {
     deleteLanguage: ({ commit }, language) => {
       axiosApi.post(process.env.VUE_APP_API_URL + 'language/delete/', qs.stringify({
         short: language.short
-      })).then((response) => {
-        console.log('response: ', response.data)
+      })).then(() => {
         commit('none')
         ElNotification({
           title: 'Error',
