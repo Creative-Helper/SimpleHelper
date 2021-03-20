@@ -1,8 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { deleteFile, fileExist, fileRename, readFileJson, readFiles, writeFileJson } from '../workingFiles/fileApi.js'
-import { searchLanguage } from '../languages/languageApi.js'
-import { filesToJson } from './utils.js'
+import searchFiles from './searchFiles.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -16,8 +15,7 @@ const changeLanguage = (app) => {
     }
     const oldL = req.body.old
     const newL = req.body.language
-    const files = readFiles(path.resolve(__dirname,  './available/'))
-    const fileNames = filesToJson(files)
+    const fileNames = searchFiles()
     const filterShort = fileNames.find(item => item.short === oldL.short)
     const url = filterShort.url
     const image = readFileJson(url,'').image

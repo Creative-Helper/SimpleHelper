@@ -1,20 +1,11 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { readFiles } from '../workingFiles/fileApi.js'
-import { filesToJson } from './utils.js'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+import searchFiles from './searchFiles.js'
 
 const searchLanguage = (short, name = null) => {
-  const files = readFiles(path.resolve(__dirname,  './available/'))
-  const fileNames = filesToJson(files)
+  const fileNames = searchFiles()
   if (name) {
     const resultName = searchLanguageForName(name, fileNames)
     const resultShort = searchLanguageForShort(short, fileNames)
-    if (resultName) {
-      return true
-    }
-    return resultShort
+    return resultName ? resultName : resultShort
 
   }
   return searchLanguageForShort(short, fileNames)

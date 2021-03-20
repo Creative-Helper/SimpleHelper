@@ -1,7 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { readFiles, readFileJson, writeFileJson, deleteFile } from '../workingFiles/fileApi.js'
-import { filesToJson } from './utils.js'
+import { readFileJson,  deleteFile } from '../workingFiles/fileApi.js'
+import searchFiles from './searchFiles.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -13,8 +13,7 @@ const deleteLanguage = (app) => {
       res.end(JSON.stringify({ error: 'Falta la referencia para borrar el lenguaje' }))
       return
     }
-    const files = readFiles(path.resolve(__dirname,  './available/'))
-    const fileNames = filesToJson(files)
+    const fileNames = searchFiles()
     const filterShort = fileNames.find(item => item.short === req.body.short)
     if (!filterShort) {
       res.status(400)
