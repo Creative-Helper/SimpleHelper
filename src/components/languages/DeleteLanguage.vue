@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button type="text" @click="dialogVisible = true">{{t('languages.delete')}}</el-button>
-    <modal :visible="dialogVisible" title="Eliminar lenguaje">
+    <el-button type="text" @click="dialogVisible = true">{{t('languages.buttons.delete')}}</el-button>
+    <modal :visible="dialogVisible" :title="t('languages.modal.titles.delete')">
       <form-language @operation="operation" :externalLanguage="internalLanguage" action="delete"/>
     </modal>
   </div>

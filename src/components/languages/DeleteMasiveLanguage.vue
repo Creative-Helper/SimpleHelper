@@ -1,43 +1,43 @@
 <template>
   <div class="createlng">
-  <el-button type="text" @click="dialogVisible = true">{{t('languages.delete')}}</el-button>
-  <modal :visible="dialogVisible" title="Borrado masivo de lenguajes" >
+  <el-button type="text" @click="dialogVisible = true">{{t('languages.buttons.delete')}}</el-button>
+  <modal :visible="dialogVisible" :title="t('languages.modal.titles.deletes')" >
   <el-table
     :data="internaList"
     style="width: 100%">
     <el-table-column
       prop="name"
-      label="Name"
+      :label="t('languages.fields.name')"
       width="180">
     </el-table-column>
     <el-table-column
       prop="short"
-      label="Letters"
+      :label="t('languages.fields.shortshort')"
       width="180">
     </el-table-column>
     <el-table-column
-      label="Image">
+      :label="t('languages.fields.image')">
       <template #default="scope">
         <div class="content-image-language" v-if="scope.row.type==='image'">
-          <img :src="scope.row.image"/>
+          <img :src="scope.row.image" :alt="scope.row.name"/>
         </div>
         <div class="content-image-language" v-html="scope.row.image" v-if="scope.row.type==='text'"/>
       </template>
     </el-table-column>
     <el-table-column
       fixed="right"
-      label="Operaciones"
+      :label="t('languages.fields.operations')"
       width="120">
       <template #default="scope">
-        <el-button type="text" @click="recovery(scope.row)">Recovery</el-button>
+        <el-button type="text" @click="recovery(scope.row)">{{t('languages.buttons.recovery')}}</el-button>
       </template>
     </el-table-column>
   </el-table>
     <el-button type="primary" @click="dialogVisible=false" class="espaciado">
-      Cancelar
+      {{t('languages.buttons.cancel')}}
     </el-button>
     <el-button type="danger" @click="deleteLang" class="espaciado">
-      Eliminar
+      {{t('languages.buttons.delete')}}
     </el-button>
   </modal>
   </div>

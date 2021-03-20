@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button type="text" @click="dialogVisible = true">{{ t('languages.change') }}</el-button>
-    <modal :visible="dialogVisible" title="Modificar lenguaje">
+    <el-button type="text" @click="dialogVisible = true">{{ t('languages.buttons.change') }}</el-button>
+    <modal :visible="dialogVisible" :title="t('languages.modal.titles.change')">
       <form-language @operation="operation" :externalLanguage="internalLanguage" action="change"/>
     </modal>
   </div>

@@ -3,11 +3,56 @@
     "value": "Esto es un ejemplo de traduccion"
   },
   "languages": {
-    "openDialog": "Haga clic para abrir el diálogo",
-    "enviar": "Enviar",
-    "delete": "Borrar",
-    "change": "Modificar",
-    "create": "Crear",
-    "new": "Nuevo"
+    "openDialog": "Pulse para abrir el diálogo",
+    "buttons": {
+      "enviar": "Enviar",
+      "delete": "Borrar",
+      "change": "Modificar",
+      "create": "Crear",
+      "new": "Nuevo",
+      "upload": "Pulse para subir un archivo",
+      "cancel": "Cancelar",
+      "recovery": "Recuperar"
+    },
+    "fields": {
+      "name": "Nombre",
+      "short": "Nombre corto (2 caracteres)",
+      "shortshort": "Nombre corto",
+      "image": "Imagen",
+      "operations": "Operaciones"
+    },
+    "messages": {
+      "file": "Solo archivos png/jpg/svg. Tamaño maximo 500kB",
+      "beforeFile": "Elimine el archivo ANTES de subir uno nuevo si lo desea cambiar."
+    },
+    "ajax": {
+      "titles": {
+        "error": "Error",
+        "success": "¡¡Logrado!!"
+      },
+      "messages": {
+        "change": "Cambiado el idioma",
+        "delete": "Eliminado el idioma",
+        "create": "Create el idioma"
+      }
+    },
+    "modal": {
+      "titles": {
+        "add": "Agregar idioma",
+        "delete": "Eliminar idioma",
+        "change": "Cambiar idioma",
+        "changes": "Cambiar los idiomas",
+        "deletes": "Eliminar los idiomas"
+
+      }
+    },
+    "errors": {
+      "noname": "Por favor, introduzca el nombre del idioma",
+      "noLengthName": "Tamaño del nombre inadecuado. Debe tener entre 3 y 20 caracteres",
+      "noShort": "Por favor, introduzca el nombre corto del idioma",
+      "noLengthShort": "Tamaño de nombre corto inadecuado. Debe tener ser de 2 caracteres",
+      "modal": "Por favor, revise el formulario y los errores marcados",
+      "image": "La imagen es necesaria"
+    }
   }
 }

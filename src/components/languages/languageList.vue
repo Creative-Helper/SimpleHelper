@@ -15,26 +15,26 @@
     </el-table-column>
     <el-table-column
       prop="name"
-      label="Name"
+      :label="t('languages.fields.name')"
       width="180">
     </el-table-column>
     <el-table-column
       prop="short"
-      label="Letters"
+      :label="t('languages.fields.shortshort')"
       width="180">
     </el-table-column>
     <el-table-column
-      label="Image">
+      :label="t('languages.fields.image')">
       <template #default="scope">
         <div class="content-image-language" v-if="scope.row.type==='image'">
-          <img :src="scope.row.image"/>
+          <img :src="scope.row.image" :alt="scope.row.name"/>
         </div>
         <div class="content-image-language" v-html="scope.row.image" v-if="scope.row.type==='text'"/>
       </template>
     </el-table-column>
     <el-table-column
       fixed="right"
-      label="Operaciones"
+      :label="t('languages.fields.operations')"
       width="120">
       <template #default="scope">
         <delete-language :externalLanguage="scope.row" @operation="operation" />
@@ -47,6 +47,7 @@
 <script>
 import { useStore } from 'vuex'
 import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import DeleteLanguage from './DeleteLanguage'
 import ChangeLanguage from '@/components/languages/ChangeLanguage'
 import CreateLanguage from '@/components/languages/CreateLanguage'
@@ -64,6 +65,7 @@ export default {
   },
   setup () {
     const store = useStore()
+    const { t } = useI18n()
     const bulkSelection = ref([])
     const init = () => {
       store.dispatch('language/Init')
@@ -76,14 +78,14 @@ export default {
       bulkSelection.value = selection
     }
     const operation = () => {
-      console.log('init')
       init()
     }
     return {
       listLanguage,
       handleSelectionChange,
       bulkSelection,
-      operation
+      operation,
+      t
     }
   }
 }

@@ -12,13 +12,13 @@
       :file-list="fileListInternal">
       <div class="espaciado">
         <el-button size="small" type="primary" :disabled="fileListInternal.length !== 0">
-          Clic para subir archivo
+          {{t('languages.buttons.upload')}}
         </el-button>
       </div>
       <template #tip>
-        <div class="el-upload__tip">Solo archivos jpg/png/svg con un tamaño menor de 500kb
+        <div class="el-upload__tip">{{t('languages.messages.file')}}
           <div v-if="fileListInternal.length > 0" class="espaciado">
-            Elimine el archivo ANTES de subir uno nuevo si lo desea cambiar.
+            {{t('languages.messages.beforeFile')}}
           </div>
         </div>
       </template>
@@ -27,6 +27,7 @@
 </template>
 <script>
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'uploadGeneral',
@@ -39,6 +40,7 @@ export default {
   },
   emits: ['update:filename'],
   setup (props, context) {
+    const { t } = useI18n()
     const lineUpload = process.env.VUE_APP_DOMAIN + ':' + process.env.VUE_APP_PORT + process.env.VUE_APP_API_URL + props.url
     const fileListInternal = ref([])
     const handleRemove = () => {
@@ -53,7 +55,8 @@ export default {
       lineUpload,
       handleRemove,
       fileListInternal,
-      handleSuccess
+      handleSuccess,
+      t
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="createlng">
-    <el-button type="text" @click="dialogVisible = true">{{t('languages.new')}}</el-button>
-    <modal :visible="dialogVisible" title="Agregar lenguaje" >
+    <el-button type="text" @click="dialogVisible = true">{{t('languages.buttons.new')}}</el-button>
+    <modal :visible="dialogVisible" :title="t('languages.modal.titles.add')" >
     <form-language @operation="operation" ref="controlModal"/>
     </modal>
   </div>

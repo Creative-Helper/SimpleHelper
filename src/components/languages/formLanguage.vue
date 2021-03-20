@@ -2,19 +2,19 @@
   <div>
     <el-form label-position="left" label-width="300px" :model="internalLanguage" :rules="rules" ref="LanguageForm"
              :disabled="action==='delete'">
-      <el-form-item label="Nombre" prop="name">
+      <el-form-item :label="t('languages.fields.name')" prop="name">
         <el-input v-model="internalLanguage.name"></el-input>
       </el-form-item>
-      <el-form-item label="Caracteres identificadores (2 caracteres)" prop="short">
+      <el-form-item :label="t('languages.fields.short')" prop="short">
         <el-input type="text" v-model="internalLanguage.short" class="two-char"></el-input>
       </el-form-item>
     </el-form>
     <div>
       <el-alert v-if="formError"
-                title="Error en el envio"
+                :title="t('languages.ajax.titles.error')"
                 type="error"
                 @close="formError = false"
-                description="Por favor  revise el formulario y los errores marcados"
+                :description="t('languages.errors.modal')"
                 show-icon>
       </el-alert>
     </div>
@@ -29,16 +29,16 @@
     </div>
     <div class="text-right">
       <el-button type="plain" @click="operationLanguage" class="espaciado">
-        Cancelar
+        {{t('languages.buttons.cancel')}}
       </el-button>
       <el-button type="success" @click="createLanguage" class="espaciado" v-if="action==='create'">
-        {{ t('languages.enviar') }}
+        {{ t('languages.buttons.create') }}
       </el-button>
       <el-button type="warning" @click="changeLanguage" class="espaciado" v-if="action==='change'">
-        {{ t('languages.enviar') }}
+        {{ t('languages.buttons.change') }}
       </el-button>
       <el-button type="danger" @click="deleteLanguage" class="espaciado" v-if="action==='delete'">
-        {{ t('languages.enviar') }}
+        {{ t('languages.buttons.delete') }}
       </el-button>
     </div>
   </div>
@@ -79,29 +79,32 @@ export default {
     const uploadForm = ref(null)
     const internalLanguage = ref(deepClone(props.externalLanguage))
     const oldLanguage = ref(deepClone(props.externalLanguage))
+    const clearFields = () => {
+      internalLanguage.value.name = ''
+      internalLanguage.value.short = ''
+      internalLanguage.value.file = ''
+      formError.value = false
+      context.emit('operation')
+    }
     const createLanguage = () => {
       if (!internalLanguage.value.file) {
         formError.value = true
         ElNotification.error({
-          title: 'Error',
-          message: 'La imagen es necesaria'
+          title: t('languages.ajax.titles.error'),
+          message: t('languages.errors.image')
         })
         return
       }
       LanguageForm.value.validate((valid) => {
         if (valid) {
-          formError.value = false
           store.dispatch('language/createLanguage', deepClone(internalLanguage.value))
-          internalLanguage.value.name = ''
-          internalLanguage.value.short = ''
-          internalLanguage.value.file = ''
-          context.emit('operation')
+          clearFields()
         } else {
           formError.value = true
           if (!internalLanguage.value.file) {
             ElNotification.error({
-              title: 'Error',
-              message: 'La imagen es necesaria'
+              title: t('languages.ajax.titles.error'),
+              message: t('languages.errors.image')
             })
           }
         }
@@ -115,20 +118,16 @@ export default {
     const changeLanguage = () => {
       LanguageForm.value.validate((valid) => {
         if (valid) {
-          formError.value = false
           store.dispatch('language/modifyLanguage',
             {
               oldL: deepClone(oldLanguage.value),
               newL: deepClone(internalLanguage.value)
             })
-          internalLanguage.value.name = ''
-          internalLanguage.value.short = ''
-          internalLanguage.value.file = ''
+          clearFields()
           oldLanguage.value.name = ''
           oldLanguage.value.short = ''
           oldLanguage.value.file = ''
           resetForm()
-          context.emit('operation')
           internalLanguage.value = deepClone(props.externalLanguage)
           oldLanguage.value = deepClone(props.externalLanguage)
         } else {
@@ -138,37 +137,33 @@ export default {
     }
     const deleteLanguage = () => {
       store.dispatch('language/deleteLanguage', deepClone(internalLanguage.value))
-      internalLanguage.value.name = ''
-      internalLanguage.value.short = ''
-      internalLanguage.value.file = ''
-      formError.value = false
-      context.emit('operation')
+      clearFields()
     }
     const operationLanguage = () => context.emit('operation')
     const rules = {
       name: [
         {
           required: true,
-          message: 'Please input language name',
+          message: t('languages.errors.noname'),
           trigger: 'blur'
         },
         {
           min: 3,
           max: 20,
-          message: 'Length should be 3 to 20',
+          message: t('languages.errors.noLengthName'),
           trigger: 'blur'
         }
       ],
       short: [
         {
           required: true,
-          message: 'Please input short name',
+          message: t('languages.errors.noShort'),
           trigger: 'blur'
         },
         {
           min: 2,
           max: 2,
-          message: 'Length should be 2',
+          message: t('languages.errors.noLengthShort'),
           trigger: 'blur'
         }
       ]

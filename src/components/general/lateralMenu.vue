@@ -20,6 +20,7 @@
         </ul>
       </li>
     </ul>
+    <infoColores />
   </div>
 </template>
 <script>
@@ -27,10 +28,12 @@ import home from '@/components/general/lateral/home.json'
 import admin from '@/components/general/lateral/admin.json'
 import project from '@/components/general/lateral/project.json'
 import about from '@/components/general/lateral/about.json'
+import infoColores from '@/components/general/infoColores'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 export default {
   name: 'lateralMenu',
+  components: { infoColores },
   emits: ['index'],
   setup (props, context) {
     const homeMenu = home

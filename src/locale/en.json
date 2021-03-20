@@ -4,10 +4,54 @@
   },
   "languages": {
     "openDialog": "Click to open the dialog",
-    "enviar": "Send",
-    "delete": "Delete",
-    "change": "Modify",
-    "create": "Create",
-    "new": "New"
+    "buttons": {
+      "enviar": "Send",
+      "delete": "Delete",
+      "change": "Change",
+      "create": "Create",
+      "new": "New",
+      "upload": "Click to upload a file",
+      "cancel": "Cancel",
+      "recovery": "Recovery"
+    },
+    "fields": {
+      "name": "Name",
+      "short": "Short name (2 characters)",
+      "shortshort": "Short name",
+      "image": "Image",
+      "operations": "Operations"
+    },
+    "messages": {
+      "file": "Only png/jpg/svg files. 500kB maximum size.",
+      "beforeFile": "Delete the file BEFORE uploading a new one if you want to change it."
+    },
+    "ajax": {
+      "titles": {
+        "error": "Error",
+        "success": "¡¡Done!!"
+      },
+      "messages": {
+        "change": "Language changed",
+        "delete": "Deleted the language",
+        "create": "Create the language"
+      }
+    },
+    "modal": {
+      "titles": {
+        "add": "Add language",
+        "delete": "Delete language",
+        "change": "Change language",
+        "changes": "Change languages",
+        "deletes": "Delete languages"
+      }
+    },
+    "errors": {
+      "noname": "Please enter the language name",
+      "noLengthName": "Inappropriate name size. It should be between 3 and 20 characters",
+      "noShort": "Please enter the short name of the language",
+      "noLengthShort": "Inappropriate short name size. It should have to be 2 characters.",
+      "modal": "Please check the form and marked errors",
+      "image": "Image is required"
+    }
   }
 }

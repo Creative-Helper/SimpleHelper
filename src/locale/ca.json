@@ -4,10 +4,54 @@
   },
   "languages": {
     "openDialog": "Feu clic per obrir el diàleg",
-    "enviar": "Enviar",
-    "delete": "Esborrar",
-    "change": "Modificar",
-    "create": "Crear",
-    "new": "Nou"
+    "buttons": {
+      "enviar": "Enviar",
+      "delete": "Esborrar",
+      "change": "Modificar",
+      "create": "Crear",
+      "new": "Nou",
+      "upload": "Premi per a pujar un arxiu",
+      "cancel": "Cancel·lar",
+      "recovery": "Recuperar"
+    },
+    "fields": {
+      "name": "Nom",
+      "short": "Nom curt (2 caràcters)",
+      "shortshort": "Nom curt",
+      "image": "Imatge",
+      "operations": "Operacions"
+    },
+    "messages": {
+      "file": "Sol arxius png/*jpg/*svg. Grandària màxima 500kB",
+      "beforeFile": "Elimini l'arxiu ABANS de pujar un nou si ho desitja canviar."
+    },
+    "ajax": {
+      "titles": {
+        "error": "Error",
+        "success": "Reeixit!!"
+      },
+      "messages": {
+        "change": "Canviat l'idioma",
+        "delete": "Eliminat l'idioma",
+        "create": "Create l'idioma"
+      }
+    },
+    "modal": {
+      "titles": {
+        "add": "Agregar idioma",
+        "delete": "Eliminar idioma",
+        "change": "Camviar idioma",
+        "changes": "Canviar els idiomes",
+        "deletes": "Eliminar els idiomes"
+      }
+    },
+    "errors": {
+      "noname": "Si us plau, introdueixi el nom de l'idioma",
+      "noLengthName": "Grandària del nom inadequat. Ha de tenir entre 3 i 20 caràcters",
+      "noShort": "Si us plau, introdueixi el nom curt de l'idioma",
+      "noLengthShort": "Grandària de nom curt inadequat. Ha de tenir ser de 2 caràcters",
+      "modal": "Si us plau, revisi el formulari i els errors marcats",
+      "image": "La imatge és necessària"
+    }
   }
 }

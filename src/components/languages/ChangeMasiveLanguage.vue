@@ -1,18 +1,18 @@
 <template>
   <div class="createlng">
-    <el-button type="text" @click="dialogVisible = true">{{ t('languages.change') }}</el-button>
-    <modal :visible="dialogVisible" title="Cambio masivo de lenguajes">
-      <div v-for="(lang, index) in internaList" :key="lang.name">
+    <el-button type="text" @click="dialogVisible = true">{{ t('languages.buttons.change') }}</el-button>
+    <modal :visible="dialogVisible" :title="t('languages.modal.titles.changes')">
+      <div v-for="(lang, index) in internaList" :key="index">
         <el-form label-position="left" label-width="300px" :model="lang" :rules="rules" ref="LanguageForm"
                  v-if="(index + 1) === indexGeneral">
-          <el-form-item label="Nombre" prop="name">
+          <el-form-item :label="t('languages.fields.name')" prop="name">
             <el-input type="text" v-model="lang.name"></el-input>
           </el-form-item>
-          <el-form-item label="Caracteres identificadores (2 caracteres)" prop="short">
+          <el-form-item :label="t('languages.fields.short')"  prop="short">
             <el-input type="text" v-model="lang.short"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="text" @click="recovery(lang)">Recovery</el-button>
+            <el-button type="text" @click="recovery(lang)">{{t('languages.buttons.recovery')}}</el-button>
           </el-form-item>
           <el-form-item>
             <div class="content-image-language" v-if="lang.type==='image'">
@@ -24,10 +24,10 @@
         </el-form>
       </div>
       <el-button type="primary" @click="dialogVisible=false" class="espaciado">
-        Cancelar
+        {{t('languages.buttons.cancel')}}
       </el-button>
-      <el-button type="danger" @click="changeLang" class="espaciado">
-        Eliminar
+      <el-button type="warning" @click="changeLang" class="espaciado">
+        {{t('languages.buttons.change')}}
       </el-button>
       <el-pagination
         @current-change="currentChange"
@@ -82,26 +82,26 @@ export default {
       name: [
         {
           required: true,
-          message: 'Please input language name',
+          message: t('languages.errors.noname'),
           trigger: 'blur'
         },
         {
           min: 3,
           max: 20,
-          message: 'Length should be 3 to 20',
+          message: t('languages.errors.noLengthName'),
           trigger: 'blur'
         }
       ],
       short: [
         {
           required: true,
-          message: 'Please input short name',
+          message: t('languages.errors.noShort'),
           trigger: 'blur'
         },
         {
           min: 2,
           max: 2,
-          message: 'Length should be 2',
+          message: t('languages.errors.noLengthShort'),
           trigger: 'blur'
         }
       ]
