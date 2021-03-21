@@ -113,7 +113,6 @@ export default {
     const resetForm = () => {
       LanguageForm.value.resetFields()
       formError.value = false
-      uploadForm.value.handleRemove()
     }
     const changeLanguage = () => {
       LanguageForm.value.validate((valid) => {

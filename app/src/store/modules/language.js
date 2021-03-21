@@ -1,6 +1,9 @@
 import axiosApi from '@/config/api.js'
 import qs from 'qs'
 import { ElNotification } from 'element-plus'
+import { i18n } from '@/locale/index'
+
+const t = i18n.global.t
 
 const language = {
   namespaced: true,
@@ -30,7 +33,6 @@ const language = {
   actions: {
     addLanguage: ({ commit }, language) => commit('changeLanguage', language),
     modifyLanguage: ({ commit }, { oldL, newL }) => {
-      console.log(oldL, newL)
       axiosApi.post(process.env.VUE_APP_API_URL + 'language/change/', qs.stringify({
         old: {
           name: oldL.name,
@@ -45,14 +47,14 @@ const language = {
       })).then(() => {
         commit('none')
         ElNotification({
-          title: 'Error',
-          message: 'Cambiado el lenguaje: ' + newL.name,
+          title: t('languages.ajax.titles.success'),
+          message: t('languages.ajax.messages.change') + ' ' + newL.name,
           type: 'success'
         })
       }).catch((error) => {
         const message = error.response
         ElNotification.error({
-          title: 'Error',
+          title: t('languages.ajax.titles.error'),
           message: message.data.error
         })
       })
@@ -63,14 +65,14 @@ const language = {
       })).then(() => {
         commit('none')
         ElNotification({
-          title: 'Error',
-          message: 'Eliminado el lenguaje: ' + language.name,
+          title: t('languages.ajax.titles.success'),
+          message: t('languages.ajax.messages.delete') + ' ' + language.name,
           type: 'success'
         })
       }).catch((error) => {
         const message = error.response
         ElNotification.error({
-          title: 'Error',
+          title: t('languages.ajax.titles.error'),
           message: message.data.error
         })
       })
@@ -85,8 +87,7 @@ const language = {
         name: language.name,
         short: language.short,
         file: language.file
-      })).then((response) => {
-        console.log('response: ', response.data)
+      })).then(() => {
         commit('none')
       }).catch((error) => {
         const message = error.response
