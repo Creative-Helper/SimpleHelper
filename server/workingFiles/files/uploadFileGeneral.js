@@ -8,7 +8,7 @@ const uploadFileGeneral= (app) => {
       if(err) {
         res.status(400).send("Something went wrong!")
       }
-      res.send(req.file)
+      res.json({ data: req.file,  code: 200, msg: "OK" })
     })
   })
 }
