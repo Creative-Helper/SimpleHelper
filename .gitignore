@@ -24,9 +24,5 @@ pnpm-debug.log*
 /server/uploads/*
 
 # Yarn
-.yarn/*
-!.yarn/cache
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
+server/.yarn/*
+app/.yarn/*
