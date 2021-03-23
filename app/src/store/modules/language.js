@@ -1,7 +1,7 @@
 import axiosApi from '@/config/api.js'
 import qs from 'qs'
 import { ElNotification } from 'element-plus'
-import { i18n } from '@/locale/index'
+import { i18n } from '@/locale'
 
 const t = i18n.global.t
 

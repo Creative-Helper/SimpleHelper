@@ -5,9 +5,9 @@ const fileExist = async (file, folder) => {
   await stat(folder + file, (err) => {
       if (err) {
         console.log('errores: ', err)
-        result = false
+        return false
       }
-      result = true
+      return true
   })
   return result
 }

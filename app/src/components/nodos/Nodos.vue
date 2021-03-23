@@ -1,10 +1,19 @@
 <template>
-  <div/>
+  <div>
+    <create-nodo-simple />
+    <hr />
+    <create-nodo-close />
+  </div>
 </template>
 
 <script>
+import CreateNodoSimple from '@/components/nodos/CreateNodoSimple'
+import CreateNodoClose from '@/components/nodos/CreateNodoClose'
 export default {
-  name: 'Nodos'
+  name: 'Nodos',
+  components: {
+    CreateNodoSimple, CreateNodoClose
+  }
 }
 </script>
 

@@ -1,0 +1,36 @@
+{
+  "nodes": [
+    {
+      "name": "Pedro",
+      "title": "Title",
+      "id": "268afe24-d855-4072-b989-235d6f35cf67",
+      "description": "description",
+      "type": "simple"
+    },
+    {
+      "name": "Gonzalo",
+      "title": "Title",
+      "id": "268afe24-d855-4072-b989-235d6f35cf67",
+      "description": "description",
+      "type": "simple"
+    },
+    {
+      "name": "268afe24-d855-4072-b989-235d6f35cf67",
+      "title": "Title",
+      "id": "268afe24-d855-4072-b989-235d6f35cf67",
+      "description": "description",
+      "type": "simple"
+    },
+    {
+      "name": "Largo",
+      "title": "Ejemplo de closed",
+      "id": "da6e887f-8494-409d-a1a1-47ea2cc28897",
+      "description": "Esta es una descripción",
+      "type": "close",
+      "reference": "close.open",
+      "example": "a= 100\nb=110\na+b",
+      "output": "210",
+      "link": "none"
+    }
+  ]
+}
