@@ -16,11 +16,12 @@ const createProject = (app) => {
        return
     }
     directoryCreate(pathProject)
+    directoryCreate(pathProject + '/languages')
     writeFileJson(pathProject, '/profile.json', {
       id, name, title, description, languages, mainLanguage, link, linkPosition
     })
     languages.forEach(item => {
-      writeFileJson(pathProject, '/' + item.short + '.json', {})
+      writeFileJson(pathProject + '/languages/', item.short + '.json', {})
     })
     writeFileJson(pathProject, '/nodes.json', {})
     writeFileJson(pathProject, '/nodeRelation.json', {})

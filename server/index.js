@@ -7,7 +7,7 @@ import {
   changeLanguage
 } from './languages/languageApi.js'
 import {uploadFileGeneral} from './workingFiles/fileApi.js'
-import {addNode, createProject, ListProjects} from './Projects/ProjectApi.js'
+import { addNode, createProject, deleteProject, ListProjects, changeProject } from './Projects/ProjectApi.js'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -41,6 +41,8 @@ changeLanguage(app)
 addNode(app)
 createProject(app)
 ListProjects(app)
+deleteProject(app)
+changeProject(app)
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

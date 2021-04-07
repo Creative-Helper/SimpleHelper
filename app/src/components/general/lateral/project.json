@@ -1,6 +1,32 @@
 {
   "path": [
     {
+      "name": "Proyectos",
+      "index": "pr0"
+    },
+    {
+      "name": "Nodo",
+      "index": "pr5",
+      "children": [
+        {
+          "name": "Crear",
+          "index": "pr51"
+        },
+        {
+          "name": "Modificar",
+          "index": "pr52"
+        },
+        {
+          "name": "Remover",
+          "index": "pr53"
+        },
+        {
+          "name": "Relaciones",
+          "index": "pr54"
+        }
+      ]
+    },
+    {
       "name": "Language",
       "index": "pr1",
       "children": [
@@ -9,120 +35,70 @@
           "index": "pr11"
         },
         {
-          "name": "Seleccion",
-          "index": "pr12"
-        },
-        {
-          "name": "Create",
+          "name": "Agregar",
           "index": "pr13"
         },
         {
-          "name": "Delete",
+          "name": "Remover",
           "index": "pr14"
         },
         {
-          "name": "Change",
+          "name": "Cambiar principal",
           "index": "pr15"
+        },
+        {
+          "name": "Crear idioma",
+          "index": "pr16"
         }
       ]
     },
     {
-      "name": "Create",
-      "index": "pr2"
-    },
-    {
-      "name": "Delete",
-      "index": "pr3"
-    },
-    {
-      "name": "Change",
-      "index": "pr4"
+      "name": "Plantillas",
+      "index": "pr3",
+      "children": [
+        {
+          "name": "Crear",
+          "index": "pr31"
+        },
+        {
+          "name": "Modificar",
+          "index": "pr32"
+        },
+        {
+          "name": "Eliminar",
+          "index": "pr33"
+        },
+        {
+          "name": "Seleccionar",
+          "index": "pr34"
+        }
+      ]
     },
     {
       "name": "Preview",
-      "index": "pr5",
-      "children": [
-        {
-          "name": "Create",
-          "index": "pr51"
-        },
-        {
-          "name": "Plantillas",
-          "index": "pr52"
-        }
-      ]
+      "index": "pr2"
     },
     {
-      "name": "Produce",
+      "name": "Exportar",
+      "index": "pr4"
+    },
+    {
+      "name": "Status",
       "index": "pr6",
       "children": [
         {
-          "name": "Export",
+          "name": "Nodos sin cierre",
           "index": "pr61"
         },
         {
-          "name": "Plantillas",
+          "name": "Break translate",
           "index": "pr62"
         }
       ]
     },
     {
-      "name": "Nodo",
-      "index": "pr7",
-      "children": [
-        {
-          "name": "Relation",
-          "index": "pr71"
-        },
-        {
-          "name": "Create",
-          "index": "pr72"
-        },
-        {
-          "name": "Delete",
-          "index": "pr73"
-        },
-        {
-          "name": "Change",
-          "index": "pr74"
-        }
-      ]
-    },
-    {
-      "name": "Closed",
-      "index": "pr8",
-      "children": [
-        {
-          "name": "Create",
-          "index": "pr81"
-        },
-        {
-          "name": "Delete",
-          "index": "pr82"
-        },
-        {
-          "name": "Change",
-          "index": "pr83"
-        },
-        {
-          "name": "Relation",
-          "index": "pr84"
-        }
-      ]
-    },
-    {
-      "name": "Status",
-      "index": "pr9",
-      "children": [
-        {
-          "name": "Nodos sin cierre",
-          "index": "pr91"
-        },
-        {
-          "name": "Break translate",
-          "index": "pr92"
-        }
-      ]
+      "name": "Historial de traducciones",
+      "index": "pr7"
     }
   ]
 }

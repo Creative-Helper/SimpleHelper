@@ -14,7 +14,10 @@ const projects = {
   actions: {
     Init: ({ commit }) => {
       axiosApi.post(process.env.VUE_APP_API_URL + 'project/list').then(response => {
-        commit('changeSelectProject', response.data)
+        commit('changeListProjects', response.data.data)
+        commit('changeSelectProject', {})
+      }).catch(err => {
+        console.log(err.response)
       })
     },
     setSelect: ({ commit }, project) => commit('changeSelectProject', project),
@@ -26,6 +29,13 @@ const projects = {
       }).catch((error) => {
         console.log('error: ', error.response.data.error)
       })
+    },
+    deleteProject: ({ dispatch }, project) => {
+      axiosApi.post(process.env.VUE_APP_API_URL + 'project/delete/', qs.stringify({
+        name: project.name
+      })).then(() => {
+        dispatch('Init')
+      }).catch(err => console.log(err.response.data.error))
     }
   },
   getters: {

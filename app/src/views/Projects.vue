@@ -2,6 +2,9 @@
   <div>
     Proyectos
     {{index}}
+    <div v-if="listStatus">
+      <list-projects />
+    </div>
     <div v-if="index === 'pr72'">
       <Nodos />
     </div>
@@ -13,9 +16,11 @@
 <script>
 import Nodos from '@/components/nodos/Nodos'
 import FormCrudProject from '@/components/projects/crud/FormCrudProject'
+import ListProjects from '@/components/projects/ListProjects'
+import { computed } from 'vue'
 export default {
   name: 'Projects',
-  components: { Nodos, FormCrudProject },
+  components: { Nodos, FormCrudProject, ListProjects },
   props: {
     index: {
       type: String,
@@ -23,10 +28,13 @@ export default {
       default: ''
     }
   },
-  setup () {
+  setup (props) {
     const temp = 0
+    const listStatus = computed(() => {
+      return props.index === 'pr0' || !props.index.includes('pr')
+    })
     return {
-      temp
+      temp, listStatus
     }
   }
 }

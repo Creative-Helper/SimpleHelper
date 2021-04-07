@@ -1,16 +1,16 @@
 <template>
-  <el-form label-width="180px" :model="form" :rules="rules" ref="ProjectForm">
+  <el-form label-width="180px" :model="formLocal" :rules="rules" ref="ProjectForm">
     <el-form-item label="Nombre" prop="name" required>
-      <el-input v-model="form.name"></el-input>
+      <el-input v-model="formLocal.name"></el-input>
     </el-form-item>
     <el-form-item label="Titulo" prop="title">
-      <el-input v-model="form.title"></el-input>
+      <el-input v-model="formLocal.title"></el-input>
     </el-form-item>
     <el-form-item label="Descripcion">
-      <el-input v-model="form.description"></el-input>
+      <el-input v-model="formLocal.description"></el-input>
     </el-form-item>
     <el-form-item label="Enlace del proyecto">
-      <el-input v-model="form.link"></el-input>
+      <el-input v-model="formLocal.link"></el-input>
     </el-form-item>
     <el-form-item required>
       <h3>Idiomas</h3>
@@ -23,7 +23,7 @@
         <div v-if="error" class="transfer-error"><span>{{error}}</span></div>
         <div v-if="selectLanguages.length > 0">
           <span>Lenguaje por defecto: </span>
-          <el-radio v-model="form.mainLanguage" :label="allLanguages[lang].key" v-for="lang in selectLanguages" :key="allLanguages[lang].key">{{allLanguages[lang].label}}</el-radio>
+          <el-radio v-model="formLocal.mainLanguage" :label="allLanguages[lang].key" v-for="lang in selectLanguages" :key="allLanguages[lang].key">{{allLanguages[lang].label}}</el-radio>
         </div>
       </div>
     </el-form-item>
@@ -34,10 +34,11 @@
 </template>
 
 <script>
-import { reactive, computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import UUIDGenerate from '@/assets/js/UUIDGenerate'
 import { ElNotification } from 'element-plus'
+import deepClone from '@/assets/js/deepClone'
 
 export default {
   name: 'FormCrudProject',
@@ -47,9 +48,29 @@ export default {
       require: false,
       default: 'create',
       validation: (value) => ['create', 'delete', 'change'].includes(value)
+    },
+    externForm: {
+      type: Object,
+      require: false,
+      default: () => {
+        return {
+          id: '',
+          name: '',
+          title: '',
+          description: '',
+          languages: [
+            {
+              short: 'en'
+            }
+          ],
+          mainLanguage: -1, // radio button
+          link: '',
+          linkPosition: 0 // radio button depende del link.
+        }
+      }
     }
   },
-  setup () {
+  setup: function (props) {
     const store = useStore()
     const init = () => {
       store.dispatch('language/Init')
@@ -67,7 +88,22 @@ export default {
         disabled: false
       }
     }))
-    const form = reactive({
+    const modifyExternal = (externalForm) => {
+      selectLanguages.value = []
+      setTimeout(() => {
+        allLanguages.value.forEach(item => {
+          externalForm.languages.forEach(element => {
+            if (item.short === element.short) {
+              selectLanguages.value.push(item.key)
+            }
+          })
+        })
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        formLocal.value.mainLanguage = parseInt(externalForm.mainLanguage)
+      }, 200)
+      return deepClone(externalForm)
+    }
+    const formLocal = props.status === 'create' ? ref({
       id: UUIDGenerate(),
       name: '',
       title: '',
@@ -80,7 +116,7 @@ export default {
       mainLanguage: -1, // radio button
       link: '',
       linkPosition: 0 // radio button depende del link.
-    })
+    }) : ref(modifyExternal(props.externForm.value))
     const checkName = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('El nombre es necesario'))
@@ -100,9 +136,9 @@ export default {
         error.value = 'Falta seleccionar idioma'
         return false
       }
-      if (form.mainLanguage === -1) {
+      if (formLocal.value.mainLanguage === -1) {
         if (selectLanguages.value.length === 1) {
-          form.mainLanguage = allLanguages.value[selectLanguages.value[0]].key
+          formLocal.value.mainLanguage = allLanguages.value[selectLanguages.value[0]].key
         } else {
           error.value = 'Falta seleccionar idioma'
           return false
@@ -114,9 +150,9 @@ export default {
       if (selectLanguages.value.length === 0) {
         return
       }
-      form.languages = []
+      formLocal.value.languages = []
       selectLanguages.value.forEach(item => {
-        form.languages.push({
+        formLocal.value.languages.push({
           short: allLanguages.value[item].short
         })
       })
@@ -146,7 +182,7 @@ export default {
       ProjectForm.value.validate((valid) => {
         if (valid && validateLanguages()) {
           convertLanguagesSelect()
-          store.dispatch('projects/createProject', form)
+          store.dispatch('projects/createProject', formLocal.value)
         } else {
           validateLanguages()
           ElNotification.error({
@@ -160,15 +196,18 @@ export default {
 
     watch(selectLanguages, (current) => {
       error.value = ''
-      if (current.length === 0 || !current.includes(form.mainLanguage)) {
-        form.mainLanguage = -1
+      if (current.length === 0 || !current.includes(formLocal.value.mainLanguage)) {
+        formLocal.value.mainLanguage = -1
       }
+    })
+    watch(() => props.externForm.value, (current) => {
+      formLocal.value = modifyExternal(current)
     })
     onMounted(() => {
       init()
     })
     return {
-      form,
+      formLocal,
       selectLanguages,
       allLanguages,
       rules,

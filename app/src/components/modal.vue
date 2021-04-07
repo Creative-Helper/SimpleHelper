@@ -4,6 +4,7 @@
     v-model="dialogVisible"
     :close-on-click-modal="false"
     :show-close="false"
+    :top="top"
     :width="width">
     <slot />
   </el-dialog>
@@ -27,7 +28,12 @@ export default {
     width: {
       type: String,
       require: false,
-      default: '50%'
+      default: '90%'
+    },
+    top: {
+      type: String,
+      require: false,
+      default: '15vh'
     }
   },
   setup (props) {
