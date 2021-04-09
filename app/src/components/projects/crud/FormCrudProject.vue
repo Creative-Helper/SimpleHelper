@@ -1,9 +1,9 @@
 <template>
-  <el-form label-width="180px" :model="formLocal" :rules="rules" ref="ProjectForm">
+  <el-form label-width="200px" :model="formLocal" :rules="rules" ref="ProjectForm">
     <el-form-item label="Nombre" prop="name" required>
       <el-input v-model="formLocal.name"></el-input>
     </el-form-item>
-    <el-form-item label="Titulo" prop="title">
+    <el-form-item :label="'Titulo ('+formLocal.description.length+ ' de 30 caracteres)' " prop="title">
       <el-input v-model="formLocal.title"></el-input>
     </el-form-item>
     <el-form-item label="Descripcion">
@@ -28,7 +28,8 @@
       </div>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="sendForm">Enviar</el-button>
+      <el-button type="primary" @click="sendForm(status)" v-if="status==='create'">Enviar</el-button>
+      <el-button type="success" @click="sendForm(status)" v-if="status==='change'">Cambiar</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -36,7 +37,6 @@
 <script>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import UUIDGenerate from '@/assets/js/UUIDGenerate'
 import { ElNotification } from 'element-plus'
 import deepClone from '@/assets/js/deepClone'
 
@@ -51,21 +51,17 @@ export default {
     },
     externForm: {
       type: Object,
-      require: false,
+      require: true,
       default: () => {
         return {
           id: '',
           name: '',
           title: '',
           description: '',
-          languages: [
-            {
-              short: 'en'
-            }
-          ],
-          mainLanguage: -1, // radio button
+          languages: [],
+          mainLanguage: -1,
           link: '',
-          linkPosition: 0 // radio button depende del link.
+          linkPosition: 0
         }
       }
     }
@@ -74,7 +70,6 @@ export default {
     const store = useStore()
     const init = () => {
       store.dispatch('language/Init')
-      store.dispatch('projects/Init')
     }
     const ProjectForm = ref('')
     const error = ref('')
@@ -103,20 +98,7 @@ export default {
       }, 200)
       return deepClone(externalForm)
     }
-    const formLocal = props.status === 'create' ? ref({
-      id: UUIDGenerate(),
-      name: '',
-      title: '',
-      description: '',
-      languages: [
-        {
-          short: 'en'
-        }
-      ],
-      mainLanguage: -1, // radio button
-      link: '',
-      linkPosition: 0 // radio button depende del link.
-    }) : ref(modifyExternal(props.externForm.value))
+    const formLocal = ref(modifyExternal(props.externForm.value))
     const checkName = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('El nombre es necesario'))
@@ -172,17 +154,22 @@ export default {
         },
         {
           min: 3,
-          max: 20,
-          message: 'El titulo debe tener entre 3 y 20 caracteres',
+          max: 30,
+          message: 'El titulo debe tener entre 3 y 30 caracteres',
           trigger: 'blur'
         }
       ]
     }
-    const sendForm = () => {
+    const sendForm = (status) => {
       ProjectForm.value.validate((valid) => {
         if (valid && validateLanguages()) {
           convertLanguagesSelect()
-          store.dispatch('projects/createProject', formLocal.value)
+          if (status === 'create') {
+            store.dispatch('projects/createProject', formLocal.value)
+          }
+          if (status === 'change') {
+            store.dispatch('projects/changeProject', formLocal.value)
+          }
         } else {
           validateLanguages()
           ElNotification.error({
@@ -202,6 +189,7 @@ export default {
     })
     watch(() => props.externForm.value, (current) => {
       formLocal.value = modifyExternal(current)
+      ProjectForm.value.resetFields()
     })
     onMounted(() => {
       init()

@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const changeProject = (app) => {
   app.post(process.env.API_URL + 'project/change/', (req, res) => {
+    console.log(req.body)
     res.setHeader('Content-Type', 'application/json')
     const {
       name,
@@ -49,7 +50,7 @@ const changeProject = (app) => {
         }
       })
       if (!status) {
-        deleteFile(pathProject + '/language/' + item + '.json')
+        deleteFile(pathProject + '/languages/' + item + '.json')
       }
     })
     res.json({ data: 'success' })

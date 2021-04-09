@@ -20,10 +20,8 @@ li.el-menu-item {
       transition: height 1s;
       cursor: pointer;
       &:hover {
-        &:before {
-          content: '| ';
-          color: #c24f02;
-        }
+        background: #000000;
+        color: #ffffff;
       }
     }
     ul {

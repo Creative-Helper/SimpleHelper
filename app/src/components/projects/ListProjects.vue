@@ -23,7 +23,7 @@
     <el-table-column
       label="Acciones">
       <template #default="scope">
-        <el-button type="text" @click="changeProject(scope.row)" >Modificar</el-button>
+        <el-button type="text" @click="changeProject(scope.row)">Modificar</el-button>
         <el-popconfirm
           confirmButtonText='OK'
           cancelButtonText='No, Gracias'
@@ -33,15 +33,15 @@
           title="Are you sure to delete this?"
         >
           <template #reference>
-        <el-button type="text" >Eliminar</el-button>
+            <el-button type="text">Eliminar</el-button>
           </template>
         </el-popconfirm>
       </template>
     </el-table-column>
   </el-table>
   <modal title="Modificar Proyecto" :visible="visible" top="0">
-    <form-crud-project :extern-form="projectObjective" status="change" ref="refFormChanges"/>
-    <el-button type="text" @click="visible = false">Cerrar modal</el-button>
+    <form-crud-project :extern-form="projectObjective" :status="status" ref="refFormChanges" />
+    <el-button type="text" @click="closeModal">Cerrar modal</el-button>
   </modal>
 </template>
 
@@ -51,34 +51,64 @@ import { useStore } from 'vuex'
 import FormCrudProject from '@/components/projects/crud/FormCrudProject'
 import modal from '@/components/modal'
 import deepClone from '@/assets/js/deepClone'
+import UUIDGenerate from '@/assets/js/UUIDGenerate'
+
 export default {
   name: 'ListProjects',
-  components: { FormCrudProject, modal },
+  components: {
+    FormCrudProject,
+    modal
+  },
   setup () {
     const store = useStore()
+    const status = ref('change')
     const refListProjects = ref('')
     const refFormChanges = ref('')
-    const visible = ref(false)
+    const visible = computed(() => store.getters['projects/getModalStatus'])
     const projectObjective = reactive({})
     const ListOfProjects = computed(() => store.getters['projects/getList'])
     const init = () => {
       store.dispatch('projects/Init')
     }
     const createProject = () => {
-      console.log('accion')
+      status.value = 'create'
+      projectObjective.value = {
+        id: UUIDGenerate(),
+        name: '',
+        title: '',
+        description: '',
+        languages: [],
+        mainLanguage: -1, // radio button
+        link: '',
+        linkPosition: 0 // radio button depende del link.
+      }
+      store.dispatch('projects/openModal')
     }
     const changeProject = (project) => {
+      status.value = 'change'
       projectObjective.value = deepClone(project)
-      visible.value = true
+      store.dispatch('projects/openModal')
     }
     const deleteProject = (project) => {
       store.dispatch('projects/deleteProject', project)
+    }
+    const closeModal = () => {
+      store.dispatch('projects/closeModal')
     }
     onMounted(() => {
       init()
     })
     return {
-      ListOfProjects, refListProjects, changeProject, createProject, deleteProject, visible, projectObjective, refFormChanges
+      ListOfProjects,
+      refListProjects,
+      changeProject,
+      createProject,
+      deleteProject,
+      visible,
+      projectObjective,
+      refFormChanges,
+      status,
+      closeModal
     }
   }
 }

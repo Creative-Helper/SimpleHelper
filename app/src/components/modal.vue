@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { ref, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 export default {
   name: 'modal',
   props: {
@@ -38,8 +38,8 @@ export default {
   },
   setup (props) {
     const dialogVisible = ref(props.visible)
-    watchEffect(() => {
-      dialogVisible.value = props.visible
+    watch(() => props.visible, (current) => {
+      dialogVisible.value = current
     })
     return {
       dialogVisible
