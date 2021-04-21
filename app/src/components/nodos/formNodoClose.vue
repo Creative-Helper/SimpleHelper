@@ -34,7 +34,7 @@ export default {
   name: 'formNodoClose',
   setup () {
     const formulario = ref(null)
-    const form = reactive({
+    const form = ref(reactive({
       id: UUIDGenerate(),
       name: '',
       title: '',
@@ -43,7 +43,19 @@ export default {
       example: '',
       output: '',
       link: ''
-    })
+    }))
+    const clearForm = () => {
+      form.value = reactive({
+        id: UUIDGenerate(),
+        name: '',
+        title: '',
+        reference: '',
+        description: '',
+        example: '',
+        output: '',
+        link: ''
+      })
+    }
     const rules = {
       title: [
         {
@@ -107,7 +119,7 @@ export default {
       ]
     }
     return {
-      form, rules, formulario
+      form, rules, formulario, clearForm
     }
   }
 }

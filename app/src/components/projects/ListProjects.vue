@@ -1,6 +1,12 @@
 <template>
+  <transition name="no-mode-fade">
+  <div v-if="viewList === 0" class="container-transition">
   <div class="text-left">
     <el-button type="success" size="small" @click="createProject">Crear proyecto</el-button>
+    <span v-if="refSelectProject">
+      <el-button type="danger" size="small" @click="selectProject(null)">Anular seleccion de projecto</el-button>
+      <el-button type="success" size="small" @click="viewList = 1">Administrar proyecto</el-button>
+    </span>
   </div>
   <el-table
     ref="refListProjects"
@@ -36,11 +42,30 @@
             <el-button type="text">Eliminar</el-button>
           </template>
         </el-popconfirm>
+        <span v-if="refSelectProject && refSelectProject.id===scope.row.id">&nbsp;Seleccionado</span>
+        <el-popconfirm v-else
+                       confirmButtonText='OK'
+                       cancelButtonText='No, Gracias'
+                       icon="el-icon-info"
+                       iconColor="red"
+                       @confirm="selectProject(scope.row)"
+                       title="Are you sure to select this?"
+        >
+          <template #reference>
+            <el-button type="text">Seleccionar</el-button>
+          </template>
+        </el-popconfirm>
       </template>
     </el-table-column>
   </el-table>
+  </div>
+  <div v-else class="container-transition text-left">
+    <el-button type="success" size="small" @click="viewList = 0">Volver a proyectos</el-button>
+    <list-nodes :project-active="refSelectProject" />
+  </div>
+  </transition>
   <modal title="Modificar Proyecto" :visible="visible" top="0">
-    <form-crud-project :extern-form="projectObjective" :status="status" ref="refFormChanges" />
+    <form-crud-project :extern-form="projectObjective" :status="status" ref="refFormChanges"/>
     <el-button type="text" @click="closeModal">Cerrar modal</el-button>
   </modal>
 </template>
@@ -52,16 +77,20 @@ import FormCrudProject from '@/components/projects/crud/FormCrudProject'
 import modal from '@/components/modal'
 import deepClone from '@/assets/js/deepClone'
 import UUIDGenerate from '@/assets/js/UUIDGenerate'
+import ListNodes from '@/components/nodos/ListNodes'
 
 export default {
   name: 'ListProjects',
   components: {
+    ListNodes,
     FormCrudProject,
     modal
   },
   setup () {
     const store = useStore()
     const status = ref('change')
+    const viewList = ref(0)
+    const refSelectProject = computed(() => store.getters['projects/getSelect'])
     const refListProjects = ref('')
     const refFormChanges = ref('')
     const visible = computed(() => store.getters['projects/getModalStatus'])
@@ -92,6 +121,9 @@ export default {
     const deleteProject = (project) => {
       store.dispatch('projects/deleteProject', project)
     }
+    const selectProject = (project) => {
+      store.dispatch('projects/setSelect', project)
+    }
     const closeModal = () => {
       store.dispatch('projects/closeModal')
     }
@@ -104,11 +136,14 @@ export default {
       changeProject,
       createProject,
       deleteProject,
+      selectProject,
+      refSelectProject,
       visible,
       projectObjective,
       refFormChanges,
       status,
-      closeModal
+      closeModal,
+      viewList
     }
   }
 }
@@ -116,4 +151,17 @@ export default {
 
 <style scoped>
 
+.no-mode-fade-enter-active, .no-mode-fade-leave-active {
+  transition: opacity .5s ease
+}
+
+.no-mode-fade-enter-from, .no-mode-fade-leave-to {
+  opacity: 0
+}
+
+.container-transition {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
 </style>

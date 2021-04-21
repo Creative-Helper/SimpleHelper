@@ -23,12 +23,20 @@ export default {
   name: 'formNodoSimple',
   setup () {
     const formulario = ref(null)
-    const form = reactive({
+    const form = ref(reactive({
       id: UUIDGenerate(),
       name: '',
       title: '',
       description: ''
-    })
+    }))
+    const clearForm = () => {
+      form.value = reactive({
+        id: UUIDGenerate(),
+        name: '',
+        title: '',
+        description: ''
+      })
+    }
     const rules = {
       title: [
         {
@@ -56,7 +64,7 @@ export default {
       ]
     }
     return {
-      form, rules, formulario
+      form, rules, formulario, clearForm
     }
   }
 }

@@ -10,7 +10,7 @@
 
 <script>
 import formNodoClose from '@/components/nodos/formNodoClose'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import deepClone from '@/assets/js/deepClone'
 import { useStore } from 'vuex'
 
@@ -20,23 +20,25 @@ export default {
   setup () {
     const formCreate = ref(null)
     const store = useStore()
+    const projectActive = computed(() => store.getters['projects/getSelect'])
+    const resetForm = () => {
+      formCreate.value.clearForm()
+    }
     const createCurrent = () => {
       formCreate.value.formulario.validate((valid) => {
-        console.log('invalidado: ', valid)
         if (valid) {
-          console.log('entro')
           const formSend = deepClone(formCreate.value.form)
-          console.log(formSend)
           formSend.type = 'close'
+          formSend.project = projectActive.value.name
           store.dispatch('nodes/addNode', formSend)
-          console.log(formSend)
+          resetForm()
         } else {
           console.log('error form')
         }
       })
     }
     return {
-      formCreate, createCurrent
+      formCreate, createCurrent, resetForm
     }
   }
 }

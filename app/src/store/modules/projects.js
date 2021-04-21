@@ -6,11 +6,18 @@ const projects = {
   namespaced: true,
   state: () => ({
     listProjects: [],
-    selectProject: {},
+    selectProject: null,
     modal: false
   }),
   mutations: {
-    changeSelectProject: (state, project) => { state.selectProject = project },
+    changeSelectProject: (state, project) => {
+      state.selectProject = project
+      if (project && project.id) {
+        localStorage.setItem('project', project.id)
+      } else {
+        localStorage.removeItem('project')
+      }
+    },
     changeListProjects: (state, projects) => { state.listProjects = projects },
     changeModalStatus: (state, modal) => { state.modal = modal }
   },
@@ -18,8 +25,16 @@ const projects = {
     Init: ({ commit }) => {
       axiosApi.post(process.env.VUE_APP_API_URL + 'project/list').then(response => {
         commit('changeListProjects', response.data.data)
-        commit('changeSelectProject', {})
         commit('changeModalStatus', false)
+        const project = localStorage.getItem('project')
+        if (project) {
+          const search = response.data.data.find(item => item.id === project)
+          if (search) {
+            commit('changeSelectProject', search)
+            return
+          }
+        }
+        commit('changeSelectProject', null)
       }).catch(err => {
         console.log(err.response)
       })
@@ -72,7 +87,22 @@ const projects = {
   getters: {
     getList: (state) => state.listProjects,
     getSize: (state) => state.listProjects.length,
-    getSelect: (state) => state.selectProject,
+    getSelect: (state, commit) => {
+      if (state.selectProject === null) {
+        const project = localStorage.getItem('project')
+        if (project) {
+          const search = state.listProjects.find(item => item.id === project)
+          if (search) {
+            commit('changeSelectProject', search)
+            return search
+          } else {
+            localStorage.removeItem('project')
+          }
+          return null
+        }
+      }
+      return state.selectProject
+    },
     getModalStatus: (state) => state.modal
   }
 }

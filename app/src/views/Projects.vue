@@ -1,22 +1,19 @@
 <template>
   <div>
-    Proyectos
-    {{index}}
-    <div v-if="listStatus">
+    Proyectos <span class="el-alert__title" v-if="projectActive">({{projectActive.name}})</span>
+    <div style="position: relative">
       <list-projects />
-    </div>
-    <div v-if="index === 'pr72'">
-      <Nodos />
     </div>
   </div>
 </template>
 <script>
-import Nodos from '@/components/nodos/Nodos'
+
 import ListProjects from '@/components/projects/ListProjects'
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 export default {
   name: 'Projects',
-  components: { Nodos, ListProjects },
+  components: { ListProjects },
   props: {
     index: {
       type: String,
@@ -24,13 +21,11 @@ export default {
       default: ''
     }
   },
-  setup (props) {
-    const temp = 0
-    const listStatus = computed(() => {
-      return props.index === 'pr0' || !props.index.includes('pr')
-    })
+  setup () {
+    const store = useStore()
+    const projectActive = computed(() => store.getters['projects/getSelect'])
     return {
-      temp, listStatus
+      projectActive
     }
   }
 }
