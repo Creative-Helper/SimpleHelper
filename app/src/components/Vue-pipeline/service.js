@@ -7,18 +7,18 @@ class Pipeline {
   /**
    *
    * @param {Array} nodes
-   * @param {Number} startx
-   * @param {*} starty
-   * @param {*} xstep
-   * @param {*} ystep
+   * @param {Number} startX
+   * @param {*} startY
+   * @param {*} xStep
+   * @param {*} yStep
    * @param {*} lineStyle 线型，目前支持三种线型： default(默认)，line(直线)，bessel(贝塞尔曲线)
    */
-  constructor (nodes, startx, starty, xstep, ystep, lineStyle = 'default') {
+  constructor (nodes, startX, startY, xStep, yStep, lineStyle = 'default') {
     this.nodes = nodes
-    this.startx = startx
-    this.starty = starty
-    this.xstep = xstep
-    this.ystep = ystep
+    this.startX = startX
+    this.startY = startY
+    this.xStep = xStep
+    this.yStep = yStep
     this.positionList = new Set()
     this.solvedList = []
     this.lineStyle = lineStyle
@@ -29,7 +29,7 @@ class Pipeline {
     }
     this.width = 0
     this.height = 0
-    console.log(nodes)
+    // console.log(nodes)
   }
 
   /**
@@ -91,8 +91,8 @@ class Pipeline {
   getLines () {
     const list = []
     const drawService = EdgeService.getDrawEdgeService(this.lineStyle, {
-      x: this.xstep,
-      y: this.ystep
+      x: this.xStep,
+      y: this.yStep
     })
     for (let i = 0; i < this.nodes.length; i++) {
       const node = this.nodes[i]
@@ -147,20 +147,21 @@ class Pipeline {
     })
 
     for (let i = 0; i < this.sortedList.length; i++) {
-      const sindex = this.sortedList[i]
-      if (!this.solvedList[sindex]) {
-        const fatherIndex = this.findSolvedFather(sindex)
+      const sIndex = this.sortedList[i]
+      if (!this.solvedList[sIndex]) {
+        const fatherIndex = this.findSolvedFather(sIndex)
+        console.log('fatherIndex: ', fatherIndex)
         const [y, x] = this.getPositionInMatrix(fatherIndex) // 找到父节点在矩阵中的坐标
-        const list = this.findLongestWay(sindex)
-        let startx = x + 1
+        const list = this.findLongestWay(sIndex)
+        let startX = x + 1
 
-        let starty = y
-        while (this.matrix[starty][startx]) {
-          starty++
+        let startY = y
+        while (this.matrix[startY][startX]) {
+          startY++
         }
         // starty-=1;
         list.forEach((it) => {
-          this.matrix[starty][startx++] = it
+          this.matrix[startY][startX++] = it
           this.solvedList[it] = true
         })
       }
@@ -172,12 +173,12 @@ class Pipeline {
       for (let j = 0; j < this.matrix.length; j++) {
         const index = this.matrix[i][j]
         if (index !== undefined) {
-          this.nodes[index].x = this.startx + this.xstep * j
-          this.nodes[index].y = this.starty + this.ystep * i
-          this.width = Math.max(this.width, this.nodes[index].x + this.startx)
+          this.nodes[index].x = this.startX + this.xStep * j
+          this.nodes[index].y = this.startY + this.yStep * i
+          this.width = Math.max(this.width, this.nodes[index].x + this.startX)
           this.height = Math.max(
             this.height,
-            this.nodes[index].y + this.starty
+            this.nodes[index].y + this.startY
           )
         }
       }
@@ -190,17 +191,14 @@ class Pipeline {
   optimize () {
     for (let i = 0; i < this.nodes.length; i++) {
       const node = this.nodes[i]
-      if (node.y === this.starty) {
-        // 第一行不变
+      if (node.y === this.startY) {
         continue
       }
       const parents = this.findParents(i)
       const children = this.findChildren(i)
-      // eslint-disable-next-line no-console
-      console.log(parents, children)
-      const startx = Math.max(...parents.map((item) => this.nodes[item].x))
-      const endx = Math.min(...children.map((item) => this.nodes[item].x))
-      node.x = (startx + endx) / 2
+      const startX = Math.max(...parents.map((item) => this.nodes[item].x))
+      const endX = Math.min(...children.map((item) => this.nodes[item].x))
+      node.x = (startX + endX) / 2
       this.nodes[i] = node
     }
   }
@@ -243,18 +241,12 @@ class Pipeline {
     if (list.length === 0) {
       return null
     }
-    for (let i = 0; i < list.length; i++) {
-      if (this.solvedList[list[i]]) {
-        return list[i]
-      } else {
-        return this.findSolvedFather(list[i])
-      }
-    }
+    // list.forEach(item => this.solvedList[item] ? item : this.findSolvedFather(item))
+    return this.solvedList[list[0]] ? list[0] : this.findSolvedFather(list[0])
   }
 
   /**
    * 查找某个顶点的父顶点
-   * @param {*} nodes
    * @param {*} index
    */
   findParents (index) {
@@ -303,7 +295,6 @@ class Pipeline {
 
   /**
    * 从第{index}个节点出发，深度优先搜索图
-   * @param {*} nodes
    * @param {*} index
    */
   dfs (index) {
@@ -316,7 +307,6 @@ class Pipeline {
     while (queue.length > 0) {
       const first = queue.pop()
       visited[first] = true
-      console.log(first)
       result.push(first)
       const children = this.findChildren(first)
       for (let i = 0; i < children.length; i++) {

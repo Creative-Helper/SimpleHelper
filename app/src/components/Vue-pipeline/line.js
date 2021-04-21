@@ -1,7 +1,7 @@
 export class EdgeService {
-  constructor (xstep, ystep) {
-    this.xstep = xstep
-    this.ystep = ystep
+  constructor (xStep, yStep) {
+    this.xStep = xStep
+    this.yStep = yStep
   }
 
   // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
@@ -15,23 +15,23 @@ export class EdgeService {
   }
 
   drawHEdge (start, end) {
-    if (end.x > start.x + this.xstep) {
+    if (end.x > start.x + this.xStep) {
       if (!start) {
         // console.log(start, end);
       }
       // let start = start.x + 10;
-      const number = parseInt((end.x - start.x) / this.xstep)
+      const number = (end.x - start.x) / this.xStep
 
-      const control1 = this.xstep / 2 + 40
-      const control2 = this.xstep / 2 + 30
+      const control1 = this.xStep / 2 + 40
+      const control2 = this.xStep / 2 + 30
 
       let d = `M ${start.x + 10} ${start.y} \
               l 20 0\
              C ${start.x + control1},${start.y} \
               ${start.x + control2},${start.y + 30} \
-               ${start.x + this.xstep},${start.y + 30}`
+               ${start.x + this.xStep},${start.y + 30}`
       if (number > 2) {
-        d += `l ${this.xstep * (number - 2)} 0`
+        d += `l ${this.xStep * (number - 2)} 0`
       }
 
       d += `C ${end.x - control2},${start.y + 30} \
@@ -54,12 +54,28 @@ export class EdgeService {
       end.x - 15
     },${end.y}`
   }
+
+  static getDrawEdgeService (lineStyle, step) {
+    switch (lineStyle) {
+      case 'default':
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        return new DefaultStyleService(step.x, step.y)
+      case 'bessel':
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        return new BesselStyleService(step.x, step.y)
+      case 'line':
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        return new LineStyleService(step.x, step.y)
+      default:
+        break
+    }
+  }
 }
 
 class DefaultStyleService extends EdgeService {
   // eslint-disable-next-line no-useless-constructor
-  constructor (xstep, ystep) {
-    super(xstep, ystep)
+  constructor (xStep, yStep) {
+    super(xStep, yStep)
   }
 
   drawEdge (start, end) {
@@ -77,25 +93,22 @@ class DefaultStyleService extends EdgeService {
     if (end.y > start.y) {
       // 左上到右下
       const firstCorner = end.x - start.x - 50
-      const d = `M ${start.x + 10} ${start.y}\
+      return `M ${start.x + 10} ${start.y}\
                 l ${20} 0\
                 ${rt} \
                 l 0 ${midy - 24} \
                 ${lb} \
                 l ${firstCorner - 20} 0
             `
-      return d
     } else {
       const lastCorner = end.x - start.x - 50
-      const d = `M ${start.x + 14} ${start.y}\
+      return `M ${start.x + 14} ${start.y}\
         l ${lastCorner - 20} 0\
         ${rb} \
         l 0 -${midy - 24} \
         ${lt} \
         l ${20} 0
         `
-      // console.log(d)
-      return d
     }
   }
 }
@@ -108,22 +121,19 @@ class BesselStyleService extends EdgeService {
     if (start.x === end.x) {
       return this.drawVerticalEdge(start, end)
     }
-    let path = ''
+
     if (end.y > start.y) {
-      path = `M ${start.x + 12},${start.y}\
+      return `M ${start.x + 12},${start.y}\
             C ${end.x},${start.y}\
             ${start.x + 50},${end.y}\
             ${end.x - 15},${end.y}
             `
-      return path
-    } else {
-      path = `M ${start.x},${start.y}\
+    }
+    return `M ${start.x},${start.y}\
             C ${end.x - 50},${start.y}\
             ${start.x},${end.y}\
             ${end.x - 12},${end.y}
             `
-      return path
-    }
   }
 }
 
@@ -134,18 +144,5 @@ class LineStyleService extends EdgeService {
       return this.drawHEdge(start, end)
     }
     return this.getStraightLinePath(start, end)
-  }
-
-  static getDrawEdgeService (lineStyle, step) {
-    switch (lineStyle) {
-      case 'default':
-        return new DefaultStyleService(step.x, step.y)
-      case 'bessel':
-        return new BesselStyleService(step.x, step.y)
-      case 'line':
-        return new LineStyleService(step.x, step.y)
-      default:
-        break
-    }
   }
 }

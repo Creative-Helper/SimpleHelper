@@ -80,7 +80,6 @@ export default {
       emit('mouseleave', node)
     }
     const render = () => {
-      console.log('data: ', props.data)
       service = new Pipeline(
         props.data,
         props.x,
