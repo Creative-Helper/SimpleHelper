@@ -1,0 +1,1 @@
+{"nodes":[{"name":"simple","title":"Nodo simple","id":"efd15db1-9efa-4978-b2b3-b200c503c3e8","description":"Este es un nodo simple","type":"simple"},{"name":"Nodo","title":"Este es el nodo final","id":"59be2e14-aa40-4b59-9e94-e93fe44bd929","description":"Simple descripcion","type":"close","reference":"rfeferencia","example":"Ejemplo","output":"Salida del ejemplo","link":"none"}]}

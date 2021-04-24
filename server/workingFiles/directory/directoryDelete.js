@@ -1,7 +1,7 @@
-import {rmdirSync} from 'fs'
+import {rmSync} from 'fs'
 
 const directoryDelete = (path) => {
-  return rmdirSync(path, { recursive: true })
+  return rmSync(path, { recursive: true })
 }
 
 export default  directoryDelete

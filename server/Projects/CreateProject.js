@@ -23,8 +23,12 @@ const createProject = (app) => {
     languages.forEach(item => {
       writeFileJson(pathProject + '/languages/', item.short + '.json', {})
     })
-    writeFileJson(pathProject, '/nodes.json', {})
-    writeFileJson(pathProject, '/nodeRelation.json', {})
+    writeFileJson(pathProject, '/nodes.json', {
+      nodes: []
+    })
+    writeFileJson(pathProject, '/nodeRelation.json', {
+      relation: []
+    })
     res.json({data: req.body})
   })
 }

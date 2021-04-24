@@ -1,4 +1,4 @@
-import {access, constants, existsSync} from 'fs'
+import {existsSync} from 'fs'
 
 const directoryVerified = (path) => {
   return existsSync(path)

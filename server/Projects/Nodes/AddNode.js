@@ -2,12 +2,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { readFileJson, writeFileJson, readFiles } from '../../workingFiles/fileApi.js'
 
-const project = 'temporal'
+// const project = 'temporal'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const addNode = (app) => {
   app.post(process.env.API_URL + 'project/addnode/', (req, res) => {
-    const { title, id, description, type} = req.body
+    const { title, id, description, type, project} = req.body
     const name = req.body.name ? req.body.name : req.body.id
     let node = {}
     if (type==='close') {
@@ -28,7 +28,7 @@ const addNode = (app) => {
     const parentTemp = __dirname.split(path.sep)
     parentTemp.splice(-1, 1)
     const parent = parentTemp.join(path.sep) + '/Inprocess/'+project+'/'
-    const file = project.toLowerCase() + '.json'
+    const file = 'nodes.json'
     const files = readFiles(parent)
     const search  = files.find(item => item.name === file )
     if (search) {
@@ -47,7 +47,7 @@ const addNode = (app) => {
     res.json({
       message: "Correcto",
       status: 200,
-      data: {node: node}
+      data: {node: node.nodes}
     })
   })
 }

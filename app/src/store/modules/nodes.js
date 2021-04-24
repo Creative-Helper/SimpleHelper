@@ -4,17 +4,23 @@ import qs from 'qs'
 const nodes = {
   namespaced: true,
   state: () => ({
-    nodesList: []
+    nodesList: [],
+    relations: []
   }),
   mutations: {
-    updateNodes: (state, nodes) => { state.nodesList = nodes }
+    updateNodes: (state, nodes) => { state.nodesList = nodes },
+    updateRelations: (state, relations) => {
+      state.relations = relations
+    }
   },
   actions: {
     Init: ({ commit }, project) => {
-      axiosApi.post(process.env.VUE_APP_API_URL + 'project/searchnode/', qs.stringify(
+      axiosApi.post(process.env.VUE_APP_API_URL + 'project/searchnodeandrelation/', qs.stringify(
         project
       )).then((result) => {
-        commit('updateNodes', result.data.data.node)
+        commit('updateNodes', result.data.data.nodes)
+        commit('updateRelations', result.data.data.relations)
+        console.log(result.data.data)
       }).catch((error) => {
         console.log(error.message)
       })

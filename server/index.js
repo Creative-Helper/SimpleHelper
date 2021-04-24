@@ -7,7 +7,7 @@ import {
   changeLanguage
 } from './languages/languageApi.js'
 import {uploadFileGeneral} from './workingFiles/fileApi.js'
-import { addNode, createProject, deleteProject, ListProjects, changeProject } from './Projects/ProjectApi.js'
+import { addNode, searchNodeAndRelations, createProject, deleteProject, ListProjects, changeProject } from './Projects/ProjectApi.js'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -39,6 +39,7 @@ deleteLanguage(app)
 changeLanguage(app)
 
 addNode(app)
+searchNodeAndRelations(app)
 createProject(app)
 ListProjects(app)
 deleteProject(app)

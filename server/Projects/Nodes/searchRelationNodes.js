@@ -5,8 +5,8 @@ import { readFileJson, readFiles } from '../../workingFiles/fileApi.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const searchNodes = (app) => {
-  app.post(process.env.API_URL + 'project/searchnode/', (req, res) => {
+const searchRelationNodes = (app) => {
+  app.post(process.env.API_URL + 'project/searchrelationode/', (req, res) => {
     if (!req.body.name) {
       res.setHeader('Content-Type', 'application/json')
       res.json({
@@ -32,7 +32,7 @@ const searchNodes = (app) => {
     let node = {
       nodes: []
     }
-    const file = 'nodes.json'
+    const file = 'nodeRelation.json'
     const files = readFiles(parent)
     const search  = files.find(item => item.name === file )
     if (search) {
@@ -48,4 +48,4 @@ const searchNodes = (app) => {
   })
 }
 
-export default searchNodes
+export default searchRelationNodes
