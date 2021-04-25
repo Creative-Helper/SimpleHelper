@@ -23,7 +23,7 @@
           <el-table-column
             label="Acciones">
             <template #default="scope">
-              <el-button type="text" @click="addToTree(scope.row)">Agregar al root</el-button>
+              <el-button type="text">{{ scope.row.name }}</el-button>
               <!--<el-popconfirm
                 confirmButtonText='OK'
                 cancelButtonText='No, Gracias'
@@ -53,7 +53,23 @@
           </el-table-column>
         </el-table>
         <div>
-          <el-tree :data="treeData" :props="defaultProps"></el-tree>
+          <el-tree :data="treeData" :props="defaultProps" :draggable="true" :allow-drop="dragAuth">
+            <template #default="{ node, data }">
+              <el-tooltip placement="top-start">
+                <template #content>
+                  Title: {{ data.title }}<br>
+                  descripcion: {{ data.description }}
+                </template>
+                <span class="custom-tree-node">
+                  <span :class="data.type">
+                    {{ node.label }}
+                    <i class="el-icon-circle-plus-outline" v-if="data.type==='simple'"></i>
+                    <i class="el-icon-circle-check" v-else></i>
+                  </span>
+                </span>
+              </el-tooltip>
+            </template>
+          </el-tree>
         </div>
       </el-tab-pane>
       <el-tab-pane label="Crear Nodo simple" name="simple">
@@ -70,7 +86,8 @@
 import CreateNodoSimple from '@/components/nodos/CreateNodoSimple'
 import CreateNodoClose from '@/components/nodos/CreateNodoClose'
 import { useStore } from 'vuex'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
+import deepClone from '../../assets/js/deepClone'
 
 export default {
   name: 'ListNodes',
@@ -92,31 +109,20 @@ export default {
     const active = ref(props.projectActive)
     const defaultProps = {
       children: 'children',
-      label: 'label'
+      label: 'name'
     }
-    const treeData = ref([])
     const refListNodos = ref('')
     const nodeSimple = ref('')
     const nodeClose = ref('')
     const activeOption = ref('list')
     const storeListNodos = computed(() => store.getters['nodes/getList'])
-    const addToTree = (node) => {
-      if (treeData.value[0].children) {
-        treeData.value[0].children.push({
-          label: node.title
-        })
-      } else {
-        treeData.value[0].children = [{ label: node.title }]
-      }
-    }
+    const storeListRelations = computed(() => store.getters['nodes/getRelations'])
+    const treeData = ref(deepClone(storeListRelations))
     const init = () => {
       store.dispatch('nodes/Init', active.value)
     }
     onMounted(() => {
       init()
-      treeData.value.push({
-        label: 'Root'
-      })
     })
     const handleClick = (tab) => {
       const option = tab.paneName
@@ -127,21 +133,44 @@ export default {
         nodeClose.value.resetForm()
       }
     }
+    const dragAuth = (node, destiny) => {
+      return destiny.data.type !== 'close'
+    }
+    watch(storeListRelations, (current) => {
+      treeData.value = deepClone(current)
+    })
     return {
       storeListNodos,
       refListNodos,
       activeOption,
       handleClick,
-      addToTree,
       nodeSimple,
       nodeClose,
       defaultProps,
-      treeData
+      treeData,
+      storeListRelations,
+      dragAuth
     }
   }
 }
 </script>
 
 <style scoped>
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+
+.simple {
+  color: darkcyan;
+}
+
+.close {
+  color: darkred;
+}
 
 </style>

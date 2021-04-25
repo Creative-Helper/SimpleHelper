@@ -20,7 +20,6 @@ const nodes = {
       )).then((result) => {
         commit('updateNodes', result.data.data.nodes)
         commit('updateRelations', result.data.data.relations)
-        console.log(result.data.data)
       }).catch((error) => {
         console.log(error.message)
       })
@@ -37,7 +36,8 @@ const nodes = {
   },
   getters: {
     getList: (state) => state.nodesList,
-    getSize: (state) => state.nodesList.length
+    getSize: (state) => state.nodesList.length,
+    getRelations: (state) => state.relations
   }
 }
 

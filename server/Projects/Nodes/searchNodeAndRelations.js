@@ -67,7 +67,7 @@ const verifyNodesNoRelations = (nodes, relations) => {
   nodes.forEach(item => {
     let status = false
     relations.forEach(element => {
-      if (item.id === element) {
+      if (item.id === element.id) {
         status = true
       }
       if (!status && element.child) {
@@ -75,7 +75,7 @@ const verifyNodesNoRelations = (nodes, relations) => {
       }
     })
     if (!status) {
-      backup.push(item.id)
+      backup.push(item)
     }
   })
   return backup
@@ -84,7 +84,7 @@ const verifyNodesNoRelations = (nodes, relations) => {
 const idTrueOrFalse = (id, relations) => {
   let find = false
   relations.forEach(item => {
-    if (item === relations) {
+    if (item === relations.id) {
       find = true
     }
     if (!find && item.child) {
