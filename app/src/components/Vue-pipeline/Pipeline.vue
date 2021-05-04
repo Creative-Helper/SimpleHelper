@@ -97,6 +97,7 @@ export default {
       lineList.value = service.getLines()
       width.value = service.width
       height.value = service.height
+      console.log('service: ', service, nodeList.value, lineList.value)
     }
     watch(dataLength, () => {
       render()

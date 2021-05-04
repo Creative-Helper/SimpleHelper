@@ -52,31 +52,21 @@
             </template>
           </el-table-column>
         </el-table>
-        <div>
-          <el-tree :data="treeData" :props="defaultProps" :draggable="true" :allow-drop="dragAuth">
-            <template #default="{ node, data }">
-              <el-tooltip placement="top-start">
-                <template #content>
-                  Title: {{ data.title }}<br>
-                  descripcion: {{ data.description }}
-                </template>
-                <span class="custom-tree-node">
-                  <span :class="data.type">
-                    {{ node.label }}
-                    <i class="el-icon-circle-plus-outline" v-if="data.type==='simple'"></i>
-                    <i class="el-icon-circle-check" v-else></i>
-                  </span>
-                </span>
-              </el-tooltip>
-            </template>
-          </el-tree>
-        </div>
+      </el-tab-pane>
+      <el-tab-pane label="Arbol de nodos" name="tree">
+        <tree-node :data="treeData" :tree-config="defaultProps" @change="treeChange"/>
+      </el-tab-pane>
+      <el-tab-pane label="Graficos de nodos" name="graph">
+        {{graphTree}}
       </el-tab-pane>
       <el-tab-pane label="Crear Nodo simple" name="simple">
         <create-nodo-simple ref="nodeSimple"/>
       </el-tab-pane>
       <el-tab-pane label="Crear Nodo final" name="endnode">
         <create-nodo-close ref="nodeClose"/>
+      </el-tab-pane>
+      <el-tab-pane label="demo" name="demo">
+        <demo :tree-data="treeData" ref="graphDataTree"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -85,15 +75,20 @@
 <script>
 import CreateNodoSimple from '@/components/nodos/CreateNodoSimple'
 import CreateNodoClose from '@/components/nodos/CreateNodoClose'
+import treeNode from './treeNode'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted, watch } from 'vue'
 import deepClone from '../../assets/js/deepClone'
+import relationNodeToGraph from '../../assets/js/relationNodeToGraph'
+import demo from '@/components/Vue-pipeline/demo/demo'
 
 export default {
   name: 'ListNodes',
   components: {
     CreateNodoClose,
-    CreateNodoSimple
+    CreateNodoSimple,
+    treeNode,
+    demo
   },
   props: {
     projectActive: {
@@ -106,7 +101,9 @@ export default {
   },
   setup (props) {
     const store = useStore()
+    const graphTree = ref([])
     const active = ref(props.projectActive)
+    const graphDataTree = ref('')
     const defaultProps = {
       children: 'children',
       label: 'name'
@@ -136,8 +133,12 @@ export default {
     const dragAuth = (node, destiny) => {
       return destiny.data.type !== 'close'
     }
+    const treeChange = () => {
+      graphDataTree.value.forceUpdate()
+    }
     watch(storeListRelations, (current) => {
       treeData.value = deepClone(current)
+      graphTree.value = relationNodeToGraph(treeData.value)
     })
     return {
       storeListNodos,
@@ -149,28 +150,15 @@ export default {
       defaultProps,
       treeData,
       storeListRelations,
-      dragAuth
+      dragAuth,
+      graphTree,
+      treeChange,
+      graphDataTree
     }
   }
 }
 </script>
 
 <style scoped>
-.custom-tree-node {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  padding-right: 8px;
-}
-
-.simple {
-  color: darkcyan;
-}
-
-.close {
-  color: darkred;
-}
 
 </style>
