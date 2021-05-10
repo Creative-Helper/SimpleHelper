@@ -32,7 +32,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style>
 .custom-tree-node {
   /* flex: 1;
   display: flex; */
@@ -56,6 +56,13 @@ export default {
 
 .message {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
-  // letter-spacing: .1em;
+  /* letter-spacing: .1em; */
+}
+
+.el-tree-node__content {
+  min-height: 40px;
+  /* border: 1px solid #000000;
+  display: flex;
+  align-items: center; */
 }
 </style>

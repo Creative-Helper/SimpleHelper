@@ -55,9 +55,7 @@
       </el-tab-pane>
       <el-tab-pane label="Arbol de nodos" name="tree">
         <tree-node :data="treeData" :tree-config="defaultProps" @change="treeChange"/>
-      </el-tab-pane>
-      <el-tab-pane label="Graficos de nodos" name="graph">
-        {{graphTree}}
+        <tree-graph :tree-data="treeData" ref="graphDataTree"/>
       </el-tab-pane>
       <el-tab-pane label="Crear Nodo simple" name="simple">
         <create-nodo-simple ref="nodeSimple"/>
@@ -65,9 +63,9 @@
       <el-tab-pane label="Crear Nodo final" name="endnode">
         <create-nodo-close ref="nodeClose"/>
       </el-tab-pane>
-      <el-tab-pane label="demo" name="demo">
-        <demo :tree-data="treeData" ref="graphDataTree"/>
-      </el-tab-pane>
+       <el-tab-pane label="Preview" name="preview">
+         Preview
+       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -80,15 +78,15 @@ import { useStore } from 'vuex'
 import { computed, ref, onMounted, watch } from 'vue'
 import deepClone from '../../assets/js/deepClone'
 import relationNodeToGraph from '../../assets/js/relationNodeToGraph'
-import demo from '@/components/Vue-pipeline/demo/demo'
+import treeGraph from '@/components/graph/treeGraph'
 
 export default {
   name: 'ListNodes',
   components: {
+    treeGraph,
     CreateNodoClose,
     CreateNodoSimple,
-    treeNode,
-    demo
+    treeNode
   },
   props: {
     projectActive: {

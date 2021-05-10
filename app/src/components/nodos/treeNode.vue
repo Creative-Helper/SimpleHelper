@@ -89,4 +89,5 @@ width: 80%;
 .close {
   color: darkred;
 }
+
 </style>
