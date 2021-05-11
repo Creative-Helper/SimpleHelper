@@ -66,6 +66,9 @@
        <el-tab-pane label="Preview" name="preview">
          Preview
        </el-tab-pane>
+      <el-tab-pane label="Mermaid" name="mermaid">
+        <mermaidGraph />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -79,6 +82,7 @@ import { computed, ref, onMounted, watch } from 'vue'
 import deepClone from '../../assets/js/deepClone'
 import relationNodeToGraph from '../../assets/js/relationNodeToGraph'
 import treeGraph from '@/components/graph/treeGraph'
+import mermaidGraph from '../graph/mermaidGraph'
 
 export default {
   name: 'ListNodes',
@@ -86,7 +90,8 @@ export default {
     treeGraph,
     CreateNodoClose,
     CreateNodoSimple,
-    treeNode
+    treeNode,
+    mermaidGraph
   },
   props: {
     projectActive: {
