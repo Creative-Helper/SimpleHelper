@@ -55,7 +55,7 @@
       </el-tab-pane>
       <el-tab-pane label="Arbol de nodos" name="tree">
         <tree-node :data="treeData" :tree-config="defaultProps" @change="treeChange"/>
-        <tree-graph :tree-data="treeData" ref="graphDataTree"/>
+        <mermaidGraph :project="treeData" ref="refGraphMermaid"/>
       </el-tab-pane>
       <el-tab-pane label="Crear Nodo simple" name="simple">
         <create-nodo-simple ref="nodeSimple"/>
@@ -63,11 +63,8 @@
       <el-tab-pane label="Crear Nodo final" name="endnode">
         <create-nodo-close ref="nodeClose"/>
       </el-tab-pane>
-       <el-tab-pane label="Preview" name="preview">
-         Preview
-       </el-tab-pane>
-      <el-tab-pane label="Mermaid" name="mermaid">
-        <mermaidGraph />
+      <el-tab-pane label="Preview" name="preview">
+        Preview
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -81,13 +78,11 @@ import { useStore } from 'vuex'
 import { computed, ref, onMounted, watch } from 'vue'
 import deepClone from '../../assets/js/deepClone'
 import relationNodeToGraph from '../../assets/js/relationNodeToGraph'
-import treeGraph from '@/components/graph/treeGraph'
 import mermaidGraph from '../graph/mermaidGraph'
 
 export default {
   name: 'ListNodes',
   components: {
-    treeGraph,
     CreateNodoClose,
     CreateNodoSimple,
     treeNode,
@@ -106,7 +101,7 @@ export default {
     const store = useStore()
     const graphTree = ref([])
     const active = ref(props.projectActive)
-    const graphDataTree = ref('')
+    const refGraphMermaid = ref('')
     const defaultProps = {
       children: 'children',
       label: 'name'
@@ -137,7 +132,7 @@ export default {
       return destiny.data.type !== 'close'
     }
     const treeChange = () => {
-      graphDataTree.value.forceUpdate()
+      refGraphMermaid.value.forceUpdate()
     }
     watch(storeListRelations, (current) => {
       treeData.value = deepClone(current)
@@ -156,7 +151,7 @@ export default {
       dragAuth,
       graphTree,
       treeChange,
-      graphDataTree
+      refGraphMermaid
     }
   }
 }

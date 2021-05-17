@@ -17,13 +17,6 @@ const mermaidConnect = (type = 'normal', arrow = 'simple', size = 'normal', text
       arrowStyle = '-'
   }
   let arrowResult = arrowStyle
-  if (text) {
-    if (localType === 'tick') {
-      arrowResult += text + arrowStyle
-    } else {
-      arrowResult = '-' + arrowResult + text + arrowResult + '-'
-    }
-  }
   if (localSize !== 'normal') {
     let sizeRepeat = 0
     if (localSize === 'large') {
@@ -34,7 +27,7 @@ const mermaidConnect = (type = 'normal', arrow = 'simple', size = 'normal', text
     if (localType === 'tick') {
       arrowResult = '='.repeat(sizeRepeat) + arrowResult + '='.repeat(sizeRepeat)
     } else {
-      arrowResult = '-'.repeat(sizeRepeat) + arrowResult + '-'.repeat(sizeRepeat)
+      arrowResult = '-' + arrowResult.repeat(sizeRepeat) + '-'
     }
   } else {
     if (localType === 'tick') {
@@ -49,6 +42,10 @@ const mermaidConnect = (type = 'normal', arrow = 'simple', size = 'normal', text
     } else {
       arrowResult = '<' + arrowResult + '>'
     }
+  }
+  if (text) {
+    text = '|' + text + '|'
+    arrowResult += text
   }
   return arrowResult
 }
