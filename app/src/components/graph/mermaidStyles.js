@@ -25,3 +25,7 @@ export const trapezoidShape = (node, text) => `${node}[/${text}\\]`
 export const trapezoidShapeAlt = (node, text) => `${node}[\\${text}/]`
 
 export const styleShape = (node, text, callback) => callback(node, text)
+
+export const classDefine = (name, style) => `classDef ${name} ${style}`
+
+export const nodeClassRelation = (nodeName, className) => `class ${nodeName} ${className}`

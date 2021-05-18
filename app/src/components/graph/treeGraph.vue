@@ -33,7 +33,6 @@ export default {
       renoveGraph('graphtree')
       const root = createRoot(data.value)
       const elementHtml = document.getElementById('content-graphtree')
-      console.log('no elementHTML', elementHtml)
       clientWidth.value = elementHtml.offsetWidth || 1600
       width.value = Math.floor(clientWidth.value * 0.5)
       dy.value = width.value / 4

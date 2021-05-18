@@ -83,11 +83,11 @@ width: 80%;
 }
 
 .simple {
-  color: darkcyan;
+  color: #008b8b;
 }
 
 .close {
-  color: darkred;
+  color: #8b0000;
 }
 
 </style>
