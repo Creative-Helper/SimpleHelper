@@ -64,7 +64,7 @@
         <create-nodo-close ref="nodeClose"/>
       </el-tab-pane>
       <el-tab-pane label="Preview" name="preview">
-        Preview
+        <preview :project="projectActive" :nodos="treeData"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -74,6 +74,7 @@
 import CreateNodoSimple from '@/components/nodos/CreateNodoSimple'
 import CreateNodoClose from '@/components/nodos/CreateNodoClose'
 import treeNode from './treeNode'
+import Preview from '@/components/projects/preview/Preview'
 import { useStore } from 'vuex'
 import { computed, ref, onMounted, watch } from 'vue'
 import deepClone from '../../assets/js/deepClone'
@@ -86,7 +87,8 @@ export default {
     CreateNodoClose,
     CreateNodoSimple,
     treeNode,
-    mermaidGraph
+    mermaidGraph,
+    Preview
   },
   props: {
     projectActive: {
